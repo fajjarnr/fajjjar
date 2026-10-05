@@ -17,7 +17,7 @@ const recent = posts.slice(1);
 ---
 
 <LayoutWrapper title={siteMetadata.title} description={siteMetadata.description} url="/">
-  <!-- Announcement strip -->
+  <section class="border-b-4 border-ink dark:border-paper reveal">
   <div class="border-b-2 border-ink bg-yellow dark:border-paper">
     <div class="mx-auto max-w-[1180px] px-4 py-2 sm:px-6">
       <p class="font-mono text-xs font-bold uppercase tracking-tight text-ink">
@@ -79,7 +79,7 @@ const recent = posts.slice(1);
   <!-- Featured post -->
   {featured && (
     <SectionContainer>
-      <div class="border-2 border-ink bg-yellow p-6 shadow-[7px_7px_0_#111111] dark:border-paper sm:p-8">
+      <div class="border-2 border-ink bg-yellow p-6 shadow-[7px_7px_0_#111111] dark:border-paper sm:p-8 reveal">
         <div class="flex flex-wrap items-center gap-3">
           <span class="border-2 border-ink bg-pink px-2 py-1 font-mono text-xs font-bold uppercase dark:border-paper">
             Featured
@@ -120,7 +120,7 @@ const recent = posts.slice(1);
       </p>
     )}
 
-    <ul class="mt-10 grid gap-6 sm:grid-cols-2">
+    <ul class="mt-10 grid gap-6 sm:grid-cols-2 reveal">
       {recent.map((post, i) => (
         <li
           class={`border-2 border-ink bg-white p-6 shadow-[5px_5px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper dark:bg-ink ${i === 0 ? 'sm:col-span-2' : ''}`}
@@ -162,7 +162,7 @@ const recent = posts.slice(1);
 
   <!-- Editorial callout -->
   <SectionContainer>
-    <div class="border-2 border-ink bg-cyan p-6 shadow-[5px_5px_0_#111111] dark:border-paper sm:p-8">
+    <div class="border-2 border-ink bg-cyan p-6 shadow-[5px_5px_0_#111111] dark:border-paper sm:p-8 reveal">
       <span class="inline-block border-2 border-ink bg-yellow px-2 py-1 font-mono text-xs font-bold uppercase dark:border-paper">
         Focus
       </span>

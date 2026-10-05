@@ -170,5 +170,22 @@ const banner = layout === 'PostBanner' ? images?.[0] : undefined;
     <!-- Author + Newsletter + Comments -->
     <PostFooter authors={resolvedAuthors} />
   </article>
+
+<!-- Reading progress bar -->
+<div class="fixed top-0 left-0 right-0 z-[60] h-1 bg-transparent">
+  <div id="reading-progress" class="h-full bg-pink transition-[width] duration-100" style="width: 0%"></div>
+</div>
+
+<script is:inline>
+  const progressBar = document.getElementById('reading-progress');
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    if (progressBar) progressBar.style.width = progress + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+</script>
 </LayoutWrapper>
 
