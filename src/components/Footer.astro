@@ -1,0 +1,56 @@
+---
+import { siteMetadata } from '../data/siteMetadata';
+import SocialIcons from './SocialIcons.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t-4 border-ink bg-paper dark:border-paper dark:bg-ink">
+  <div class="mx-auto max-w-[1180px] px-4 py-12 sm:px-6">
+    <div class="grid gap-8 sm:grid-cols-3">
+      <!-- Brand -->
+      <div>
+        <p class="font-display text-xl font-black uppercase tracking-tight text-ink dark:text-paper">
+          {siteMetadata.headerTitle}
+        </p>
+        <p class="mt-3 text-sm font-bold text-ink/70 dark:text-paper/70">
+          {siteMetadata.description}
+        </p>
+        <div class="mt-4">
+          <SocialIcons />
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div>
+        <p class="font-mono text-xs font-bold uppercase tracking-tight text-ink/70 dark:text-paper/70">
+          Navigate
+        </p>
+        <ul class="mt-3 space-y-2">
+          <li><a href="/blog" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper inline-block py-2 min-h-[44px] flex items-center">Blog</a></li>
+          <li><a href="/tags" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper inline-block py-2 min-h-[44px] flex items-center">Tags</a></li>
+          <li><a href="/projects" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper inline-block py-2 min-h-[44px] flex items-center">Projects</a></li>
+          <li><a href="/about" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper inline-block py-2 min-h-[44px] flex items-center">About</a></li>
+      </div>
+
+      <!-- Topics -->
+      <div>
+        <p class="font-mono text-xs font-bold uppercase tracking-tight text-ink/70 dark:text-paper/70">
+          Topics
+        </p>
+        <ul class="mt-3 space-y-2">
+          <li><a href="/tags/astro" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper">Astro</a></li>
+          <li><a href="/tags/guide" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper">Guides</a></li>
+          <li><a href="/tags/markdown" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper">Markdown</a></li>
+          <li><a href="/tags/code" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper">Code</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 border-t-2 border-ink pt-6 dark:border-paper">
+      <p class="text-sm font-bold text-ink/70 dark:text-paper/70">
+        &copy; {year} {siteMetadata.author}. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,376 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FFFDF5;
+  color: #111111;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    linear-gradient(rgba(17,17,17,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17,17,17,.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.dark body {
+  background-color: #111111;
+  color: #FFFDF5;
+  background-image:
+    linear-gradient(rgba(255,253,245,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,253,245,.05) 1px, transparent 1px);
+}
+
+/* Dark mode shadow overrides */
+.dark .card,
+.dark .post-item,
+.dark [class*='shadow-[5px_5px_0_#111111]'],
+.dark [class*='shadow-[7px_7px_0_#111111]'],
+.dark [class*='shadow-[3px_3px_0_#111111]'] {
+  box-shadow: 5px 5px 0 rgba(255, 253, 245, 0.3);
+}
+.dark [class*='shadow-[7px_7px_0_#111111]'] {
+  box-shadow: 7px 7px 0 rgba(255, 253, 245, 0.3);
+}
+.dark [class*='shadow-[3px_3px_0_#111111]'] {
+  box-shadow: 3px 3px 0 rgba(255, 253, 245, 0.3);
+}
+
+.prose {
+  max-width: none;
+}
+
+.prose pre {
+  overflow-x: auto;
+  border: 2px solid #111111;
+  background: #111111;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  color: #FFFDF5;
+  box-shadow: 5px 5px 0 #111111;
+}
+
+.prose code {
+  border: 1px solid #111111;
+  background: #F3F0E6;
+  padding: 0.125rem 0.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+}
+
+.prose pre code {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.prose img {
+  border: 3px solid #111111;
+  box-shadow: 5px 5px 0 #111111;
+}
+
+.prose pre,
+.prose kbd {
+  border-radius: 0;
+}
+
+/* KaTeX overflow fix */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  padding: 0.5rem 0;
+}
+.katex {
+  max-width: 100%;
+  font-size: 1.1em;
+}
+
+/* Smooth transitions */
+a, button, input, textarea, select {
+  transition: all 0.15s ease;
+}
+
+/* Selection color */
+::selection {
+  background: #FFE500;
+  color: #111111;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #FFFDF5;
+}
+::-webkit-scrollbar-thumb {
+  background: #111111;
+  border: 2px solid #FFFDF5;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #111111;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #FFFDF5;
+  border-color: #111111;
+}
+
+.prose a {
+  color: #FF1493;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  text-decoration: underline;
+}
+
+.prose blockquote {
+  border-left: 4px solid #111111;
+  background: #FFE500;
+  padding: 1rem;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid #111111;
+  padding: 0.5rem 1rem;
+}
+
+.prose th {
+  background: #F3F0E6;
+  font-weight: 900;
+}
+
+*:focus-visible {
+  outline: 3px solid #00D9FF;
+  outline-offset: 3px;
+}
+
+.card {
+  border: 2px solid #111111;
+  background: #FFFFFF;
+  padding: 1.5rem;
+  transition: all 0.15s ease;
+  box-shadow: 5px 5px 0 #111111;
+}
+
+.card:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0 #111111;
+}
+
+.tag {
+  display: inline-block;
+  border: 2px solid #111111;
+  background: #00D9FF;
+  padding: 0.25rem 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Post page prose overrides */
+.post-prose.prose h2,
+.post-prose.prose h3,
+.post-prose.prose h4 {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+}
+
+.post-prose.prose h2 {
+  margin-top: 3rem;
+  border-bottom: 4px solid #111111;
+  padding-bottom: 0.5rem;
+  font-size: 1.875rem;
+}
+
+.dark .post-prose.prose h2 {
+  border-bottom-color: #FFFDF5;
+}
+
+.post-prose.prose h3 {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+}
+
+.post-prose.prose a {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.post-prose.prose a:hover {
+  text-decoration-thickness: 4px;
+}
+
+.post-prose.prose pre {
+  border: 2px solid #111111;
+  background: #111111;
+  box-shadow: 5px 5px 0 #111111;
+}
+
+.dark .post-prose.prose pre {
+  border-color: #FFFDF5;
+  background: #111111;
+}
+
+.post-prose.prose blockquote {
+  border-left: 4px solid #111111;
+  background: #FFE500;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.dark .post-prose.prose blockquote {
+  border-left-color: #FFFDF5;
+}
+
+.post-prose.prose img {
+  border: 2px solid #111111;
+  box-shadow: 5px 5px 0 #111111;
+}
+
+.dark .post-prose.prose img {
+  border-color: #FFFDF5;
+}
+
+.post-prose.prose th,
+.post-prose.prose td {
+  border: 2px solid #111111;
+}
+
+.dark .post-prose.prose th,
+.dark .post-prose.prose td {
+  border-color: #FFFDF5;
+}
+
+.post-prose.prose th {
+  background: #00D9FF;
+  color: #111111;
+}
+
+.dark .post-prose.prose th {
+  background: #111111;
+  color: #FFFDF5;
+}
+
+/* About page prose overrides */
+.about-prose.prose h1,
+.about-prose.prose h2,
+.about-prose.prose h3 {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+}
+
+.about-prose.prose h2 {
+  margin-top: 2.5rem;
+  border-bottom: 4px solid #111111;
+  padding-bottom: 0.5rem;
+}
+
+.dark .about-prose.prose h2 {
+  border-bottom-color: #FFFDF5;
+}
+
+.about-prose.prose a {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.about-prose.prose a:hover {
+  text-decoration-thickness: 4px;
+}
+
+.about-prose.prose blockquote {
+  border-left: 4px solid #111111;
+  background: #FFE500;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.dark .about-prose.prose blockquote {
+  border-left-color: #FFFDF5;
+}
+
+.about-prose.prose img {
+  border: 2px solid #111111;
+  box-shadow: 5px 5px 0 #111111;
+}
+
+.dark .about-prose.prose img {
+  border-color: #FFFDF5;
+}
+
+/* Syntax highlighting token colors */
+.post-prose.prose .token.comment,
+.post-prose.prose .token.prolog,
+.post-prose.prose .token.doctype,
+.post-prose.prose .token.cdata {
+  color: rgba(255, 253, 245, 0.6);
+}
+.post-prose.prose .token.punctuation {
+  color: rgba(255, 253, 245, 0.5);
+}
+.post-prose.prose .token.property,
+.post-prose.prose .token.tag,
+.post-prose.prose .token.constant,
+.post-prose.prose .token.symbol,
+.post-prose.prose .token.deleted {
+  color: #FF1493;
+}
+.post-prose.prose .token.boolean,
+.post-prose.prose .token.number {
+  color: #A66CFF;
+}
+.post-prose.prose .token.selector,
+.post-prose.prose .token.attr-name,
+.post-prose.prose .token.string,
+.post-prose.prose .token.char,
+.post-prose.prose .token.builtin,
+.post-prose.prose .token.inserted {
+  color: #22F06B;
+}
+.post-prose.prose .token.operator,
+.post-prose.prose .token.entity,
+.post-prose.prose .token.url {
+  color: #00D9FF;
+}
+.post-prose.prose .token.atrule,
+.post-prose.prose .token.attr-value,
+.post-prose.prose .token.keyword {
+  color: #FF4B3E;
+}
+.post-prose.prose .token.function,
+.post-prose.prose .token.class-name {
+  color: #FFE500;
+}
+.post-prose.prose .token.regex,
+.post-prose.prose .token.important,
+.post-prose.prose .token.variable {
+  color: #FF9580;
+}

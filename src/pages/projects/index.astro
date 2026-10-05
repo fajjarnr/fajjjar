@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import LayoutWrapper from '../../components/LayoutWrapper.astro';
+import PageTitle from '../../components/PageTitle.astro';
+import SectionContainer from '../../components/SectionContainer.astro';
+import Card from '../../components/Card.astro';
+
+const projects = await getCollection('projects');
+---
+
+<LayoutWrapper title="Projects" description="Things I have built" url="/projects/">
+  <SectionContainer>
+    <PageTitle title="Projects" description={`${projects.length} projects and counting`} />
+
+    {projects.length === 0 && (
+      <p class="border-2 border-dashed border-ink p-6 font-bold dark:border-paper">
+        No projects yet.
+      </p>
+    )}
+
+    <ul class="grid grid-cols-1 gap-8 sm:grid-cols-2">
+      {projects.map((project) => (
+        <li>
+          <Card
+            title={project.data.title}
+            description={project.data.description}
+            link={project.data.link}
+            imgSrc={project.data.imgSrc}
+          />
+        </li>
+      ))}
+    </ul>
+  </SectionContainer>
+</LayoutWrapper>

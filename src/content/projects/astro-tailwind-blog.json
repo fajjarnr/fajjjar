@@ -1,0 +1,6 @@
+{
+  "title": "Astro Tailwind Blog",
+  "description": "A neo-brutalist blog starter built with Astro 5 and Tailwind CSS 3, deployed to Cloudflare Pages.",
+  "link": "https://github.com/fajar/astro-tailwind-blog",
+  "imgSrc": "/static/images/logo.svg"
+}

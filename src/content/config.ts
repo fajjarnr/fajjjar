@@ -1,0 +1,44 @@
+import { defineCollection, z } from 'astro:content';
+
+const blog = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    lastmod: z.coerce.date().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+    summary: z.string().optional(),
+    images: z.array(z.string()).optional(),
+    authors: z.array(z.string()).default(['default']),
+    layout: z.enum(['PostLayout', 'PostSimple', 'PostBanner']).default('PostLayout'),
+    canonicalUrl: z.string().optional(),
+  }),
+});
+
+const authors = defineCollection({
+  type: 'content',
+  schema: z.object({
+    name: z.string(),
+    avatar: z.string().optional(),
+    occupation: z.string().optional(),
+    company: z.string().optional(),
+    email: z.string().optional(),
+    twitter: z.string().optional(),
+    linkedin: z.string().optional(),
+    github: z.string().optional(),
+    layout: z.string().optional(),
+  }),
+});
+
+const projects = defineCollection({
+  type: 'data',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    link: z.string(),
+    imgSrc: z.string(),
+  }),
+});
+
+export const collections = { blog, authors, projects };

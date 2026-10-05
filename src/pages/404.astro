@@ -1,0 +1,38 @@
+---
+import LayoutWrapper from '../components/LayoutWrapper.astro';
+---
+
+<LayoutWrapper title="404 — Page Not Found" description="The page you are looking for does not exist" url="/404/">
+  <section class="mx-auto flex max-w-[760px] flex-col items-center px-4 py-20 text-center sm:px-6 sm:py-32">
+    <p class="border-4 border-ink bg-pink px-6 py-2 font-black uppercase tracking-tight text-ink shadow-[5px_5px_0_#111111] dark:border-paper">
+      Error
+    </p>
+
+    <p class="mt-8 font-display font-black uppercase leading-none tracking-tight text-ink dark:text-paper text-7xl sm:text-9xl md:text-[11rem]">
+      404
+    </p>
+
+    <h1 class="mt-6 font-display font-black uppercase tracking-tight text-3xl text-ink dark:text-paper sm:text-5xl">
+      Page not found
+    </h1>
+
+    <p class="mt-5 max-w-lg text-lg font-bold text-ink/70 dark:text-paper/70">
+      That page does not exist, or it moved somewhere else.
+    </p>
+
+    <div class="mt-10 flex flex-wrap justify-center gap-4">
+      <a
+        href="/"
+        class="border-2 border-ink bg-yellow px-6 py-3 font-black uppercase shadow-[5px_5px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper"
+      >
+        Back home
+      </a>
+      <a
+        href="/blog"
+        class="border-2 border-ink bg-cyan px-6 py-3 font-black uppercase shadow-[5px_5px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper"
+      >
+        Browse the blog
+      </a>
+    </div>
+  </section>
+</LayoutWrapper>

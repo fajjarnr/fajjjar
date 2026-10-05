@@ -1,0 +1,61 @@
+---
+import { siteMetadata } from '../data/siteMetadata';
+import { headerNavLinks } from '../data/headerNavLinks';
+import ThemeSwitch from './ThemeSwitch.astro';
+import SearchButton from './SearchButton.astro';
+import MobileNav from './MobileNav.astro';
+---
+
+<header class="sticky top-0 z-50 border-b-[3px] border-ink bg-paper dark:border-paper dark:bg-ink">
+  <nav class="mx-auto flex max-w-[1180px] items-center justify-between px-4 py-3 sm:px-6">
+    <div class="flex items-center gap-3">
+      <a
+        href="/"
+        class="font-display font-black text-xl uppercase tracking-tight text-ink hover:underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper"
+      >
+        {siteMetadata.headerTitle}
+      </a>
+      <SearchButton />
+    </div>
+
+    <!-- Desktop nav -->
+    <div class="hidden items-center gap-6 md:flex">
+      {headerNavLinks.map((link) => (
+        <a
+          href={link.href}
+          class="font-display font-bold text-ink underline decoration-transparent decoration-2 underline-offset-4 transition-all hover:decoration-ink dark:text-paper dark:hover:decoration-paper"
+        >
+          {link.title}
+        </a>
+      ))}
+      <ThemeSwitch />
+    </div>
+
+    <!-- Mobile controls -->
+    <div class="flex items-center gap-2 md:hidden">
+      <ThemeSwitch />
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        aria-label="Toggle menu"
+        class="border-2 border-ink bg-yellow p-3 text-ink shadow-[5px_5px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper dark:bg-yellow dark:text-ink min-h-[44px] min-w-[44px] flex items-center justify-center"
+      >
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <MobileNav links={headerNavLinks} />
+</header>
+
+<script is:inline>
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const panel = document.getElementById('mobile-nav-panel');
+  if (toggle && panel) {
+    toggle.addEventListener('click', () => {
+      panel.classList.toggle('hidden');
+    });
+  }
+</script>

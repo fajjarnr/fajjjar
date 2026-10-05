@@ -1,0 +1,6 @@
+{
+  "title": "KaTeX Playground",
+  "description": "A tiny sandbox for previewing LaTeX expressions rendered with remark-math and rehype-katex.",
+  "link": "https://github.com/fajar/katex-playground",
+  "imgSrc": "/static/images/twitter-card.svg"
+}

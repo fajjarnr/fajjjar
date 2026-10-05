@@ -1,0 +1,38 @@
+---
+import { siteMetadata } from '../data/siteMetadata';
+
+interface Props {
+  provider?: string;
+}
+
+const { provider = siteMetadata.newsletter.provider } = Astro.props;
+---
+
+<div class="border-2 border-ink bg-white p-6 shadow-[7px_7px_0_#111111] dark:border-paper dark:bg-ink">
+  <h3 class="mb-2 font-display font-black text-xl uppercase tracking-tight text-ink dark:text-paper">
+    Subscribe to the Newsletter
+  </h3>
+  <p class="mb-4 text-sm font-normal text-ink/70 dark:text-paper/70">
+    Get the latest posts delivered right to your inbox.
+  </p>
+  <form
+    action="#"
+    method="post"
+    class="flex flex-col gap-4 sm:flex-row"
+    onsubmit="event.preventDefault(); alert('Newsletter subscription coming soon!');"
+  >
+    <input
+      type="email"
+      name="email"
+      placeholder="Enter your email"
+      required
+      class="flex-1 border-2 border-ink bg-white px-4 py-3 text-sm font-bold text-ink shadow-[5px_5px_0_#111111] placeholder:font-normal placeholder:text-ink/50 focus:outline-none focus:ring-0 dark:border-paper dark:bg-ink dark:text-paper dark:placeholder:text-paper/50"
+    />
+    <button
+      type="submit"
+      class="border-2 border-ink bg-pink px-6 py-3 text-sm font-bold uppercase text-ink shadow-[5px_5px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper dark:bg-pink dark:text-ink"
+    >
+      Subscribe
+    </button>
+  </form>
+</div>

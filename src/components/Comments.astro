@@ -1,0 +1,53 @@
+---
+import { siteMetadata } from '../data/siteMetadata';
+
+interface Props {
+  giscusConfig?: typeof siteMetadata.comments.giscusConfig;
+}
+
+const { giscusConfig = siteMetadata.comments.giscusConfig } = Astro.props;
+
+// define:vars serializes these at build time; plain `is:inline` would emit the
+// raw `${...}` text to the browser, which is a JS syntax error there.
+const config = {
+  repo: giscusConfig?.repo || '',
+  repositoryId: giscusConfig?.repositoryId || '',
+  category: giscusConfig?.category || '',
+  categoryId: giscusConfig?.categoryId || '',
+  mapping: giscusConfig?.mapping || 'pathname',
+  reactions: giscusConfig?.reactions || '1',
+  metadata: giscusConfig?.metadata || '0',
+  theme: giscusConfig?.theme || 'light',
+  themeDark: giscusConfig?.themeDark || 'dark',
+  lang: giscusConfig?.lang || 'en',
+};
+---
+
+<section class="border-2 border-ink bg-white p-6 shadow-[5px_5px_0_#111111] dark:border-paper dark:bg-ink">
+  <h2 class="mb-4 border-b-[3px] border-ink pb-2 font-display text-xl font-black uppercase tracking-tight text-ink dark:border-paper dark:text-paper">
+    Comments
+  </h2>
+  <div id="giscus-comments"></div>
+</section>
+
+<script define:vars={{ config }}>
+
+  function loadGiscus() {
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', config.repo);
+    script.setAttribute('data-repo-id', config.repositoryId);
+    script.setAttribute('data-category', config.category);
+    script.setAttribute('data-category-id', config.categoryId);
+    script.setAttribute('data-mapping', config.mapping);
+    script.setAttribute('data-reactions-enabled', config.reactions);
+    script.setAttribute('data-emit-metadata', config.metadata);
+    script.setAttribute('data-theme', config.theme);
+    script.setAttribute('data-lang', config.lang);
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+    document.getElementById('giscus-comments')?.appendChild(script);
+  }
+
+  loadGiscus();
+</script>

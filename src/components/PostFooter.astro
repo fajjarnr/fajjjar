@@ -1,0 +1,60 @@
+---
+import Newsletter from './Newsletter.astro';
+import Comments from './Comments.astro';
+import SocialIcons from './SocialIcons.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  authors: CollectionEntry<'authors'>[];
+}
+
+const { authors } = Astro.props;
+---
+
+{
+  authors.length > 0 && (
+    <div class="mt-14 border-2 border-ink bg-white p-6 shadow-[5px_5px_0_#111111] dark:border-paper dark:bg-ink">
+      <h2 class="font-display font-black uppercase tracking-tight text-xl text-ink dark:text-paper">
+        Written by
+      </h2>
+      <ul class="mt-4 space-y-4">
+        {authors.map((author) => (
+          <li class="flex items-center gap-4">
+            {author.data.avatar && (
+              <img
+                src={author.data.avatar}
+                alt={author.data.name}
+                class="h-14 w-14 border-2 border-ink bg-paper-muted object-cover dark:border-paper dark:bg-ink"
+                loading="lazy"
+              />
+            )}
+            <div class="min-w-0">
+              <p class="font-display font-black text-ink dark:text-paper">{author.data.name}</p>
+              {(author.data.occupation || author.data.company) && (
+                <p class="text-sm font-bold text-ink/70 dark:text-paper/70">
+                  {[author.data.occupation, author.data.company].filter(Boolean).join(' @ ')}
+                </p>
+              )}
+              <SocialIcons
+                links={{
+                  github: author.data.github,
+                  twitter: author.data.twitter,
+                  linkedin: author.data.linkedin,
+                  email: author.data.email ? `mailto:${author.data.email}` : undefined,
+                }}
+              />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+<div class="mt-12">
+  <Newsletter />
+</div>
+
+<div class="mt-12">
+  <Comments />
+</div>

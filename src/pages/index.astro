@@ -1,0 +1,174 @@
+---
+import { getCollection } from 'astro:content';
+import LayoutWrapper from '../components/LayoutWrapper.astro';
+import SectionContainer from '../components/SectionContainer.astro';
+import Tag from '../components/Tag.astro';
+import Link from '../components/Link.astro';
+import { siteMetadata } from '../data/siteMetadata';
+import { formatDate, slugTag } from '../utils/blog';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
+
+const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+const featured = posts[0];
+const recent = posts.slice(1);
+---
+
+<LayoutWrapper title={siteMetadata.title} description={siteMetadata.description} url="/">
+  <!-- Announcement strip -->
+  <div class="border-b-2 border-ink bg-yellow dark:border-paper">
+    <div class="mx-auto max-w-[1180px] px-4 py-2 sm:px-6">
+      <p class="font-mono text-xs font-bold uppercase tracking-tight text-ink">
+        ✦ {featured?.data.title ?? 'DevOps / Platform Engineering'}
+      </p>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="border-b-4 border-ink dark:border-paper">
+    <div class="mx-auto max-w-[1180px] px-4 py-16 sm:px-6 sm:py-24">
+      <span class="inline-block border-2 border-ink bg-cyan px-3 py-1 font-mono text-xs font-bold uppercase tracking-tight dark:border-paper">
+        DevOps / Platform Engineer
+      </span>
+      <h1 class="mt-6 font-display font-black uppercase leading-[0.9] tracking-tight text-ink dark:text-paper text-5xl sm:text-6xl md:text-7xl">
+        Bangun<br />
+        <span class="bg-yellow px-2 inline-block">platform</span><br />
+        yang tenang
+      </h1>
+      <p class="mt-8 max-w-xl text-lg font-bold leading-relaxed text-ink/70 dark:text-paper/70 sm:text-xl">
+        {siteMetadata.description}
+      </p>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <a
+          href="/blog"
+          class="border-2 border-ink bg-pink px-6 py-3 font-black uppercase shadow-[5px_5px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper"
+        >
+          Read the blog
+        </a>
+        <a
+          href="/about"
+          class="border-2 border-ink bg-white px-6 py-3 font-black uppercase shadow-[5px_5px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper dark:bg-ink dark:text-paper"
+        >
+          About me
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Topic filter strip -->
+  {allTags.length > 0 && (
+    <div class="border-b-2 border-ink bg-paper-muted dark:border-paper dark:bg-ink">
+      <div class="mx-auto max-w-[1180px] px-4 py-4 sm:px-6">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="font-mono text-xs font-bold uppercase text-ink/70 dark:text-paper/70">Topics:</span>
+          {allTags.map((tag) => (
+            <a
+              href={`/tags/${slugTag(tag)}/`}
+              class="inline-block border-2 border-ink bg-white px-3 py-1 font-mono text-xs font-bold uppercase text-ink transition-all hover:bg-yellow dark:border-paper dark:bg-ink dark:text-paper"
+            >
+              {tag}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  )}
+
+  <!-- Featured post -->
+  {featured && (
+    <SectionContainer>
+      <div class="border-2 border-ink bg-yellow p-6 shadow-[7px_7px_0_#111111] dark:border-paper sm:p-8">
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="border-2 border-ink bg-pink px-2 py-1 font-mono text-xs font-bold uppercase dark:border-paper">
+            Featured
+          </span>
+          <time datetime={featured.data.date.toISOString()} class="font-mono text-xs font-bold uppercase text-ink/70">
+            {formatDate(featured.data.date)}
+          </time>
+        </div>
+        <h2 class="mt-4 font-display font-black uppercase tracking-tight text-3xl text-ink sm:text-4xl">
+          <Link href={`/blog/${featured.slug}/`} class="text-ink hover:underline decoration-2 underline-offset-4">
+            {featured.data.title}
+          </Link>
+        </h2>
+        {featured.data.summary && (
+          <p class="mt-3 max-w-2xl leading-relaxed text-ink/70">{featured.data.summary}</p>
+        )}
+        <div class="mt-5 flex flex-wrap gap-2">
+          {featured.data.tags.map((tag) => <Tag tag={slugTag(tag)} />)}
+        </div>
+      </div>
+    </SectionContainer>
+  )}
+
+  <!-- Recent posts -->
+  <SectionContainer>
+    <div class="flex items-end justify-between gap-4 border-b-4 border-ink pb-4 dark:border-paper">
+      <h2 class="font-display font-black uppercase tracking-tight text-3xl text-ink dark:text-paper sm:text-4xl">
+        Latest writing
+      </h2>
+      <span class="border-2 border-ink bg-green px-3 py-1 font-mono text-xs font-black dark:border-paper">
+        {recent.length} posts
+      </span>
+    </div>
+
+    {recent.length === 0 && (
+      <p class="mt-8 border-2 border-dashed border-ink p-6 font-bold dark:border-paper">
+        No posts yet.
+      </p>
+    )}
+
+    <ul class="mt-10 grid gap-6 sm:grid-cols-2">
+      {recent.map((post, i) => (
+        <li
+          class={`border-2 border-ink bg-white p-6 shadow-[5px_5px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper dark:bg-ink ${i === 0 ? 'sm:col-span-2' : ''}`}
+        >
+          <div class="flex flex-wrap items-center gap-3">
+            <time datetime={post.data.date.toISOString()} class="border-2 border-ink px-2 py-1 font-mono text-xs font-black uppercase dark:border-paper">
+              {formatDate(post.data.date)}
+            </time>
+            <span class="border-2 border-ink bg-cyan px-2 py-1 font-mono text-xs font-black uppercase dark:border-paper">
+              {post.data.layout}
+            </span>
+          </div>
+          <h3 class="mt-4 font-display font-black uppercase tracking-tight text-xl text-ink dark:text-paper sm:text-2xl">
+            <Link href={`/blog/${post.slug}/`} class="text-ink dark:text-paper hover:underline decoration-2 underline-offset-4">
+              {post.data.title}
+            </Link>
+          </h3>
+          {post.data.summary && (
+            <p class="mt-3 leading-relaxed text-ink/70 dark:text-paper/70">
+              {post.data.summary}
+            </p>
+          )}
+          <div class="mt-5 flex flex-wrap gap-2">
+            {post.data.tags.map((tag) => <Tag tag={slugTag(tag)} />)}
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-12 flex justify-center">
+      <a
+        href="/blog"
+        class="border-2 border-ink bg-pink px-8 py-4 font-black uppercase shadow-[7px_7px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper"
+      >
+        View all posts
+      </a>
+    </div>
+  </SectionContainer>
+
+  <!-- Editorial callout -->
+  <SectionContainer>
+    <div class="border-2 border-ink bg-cyan p-6 shadow-[5px_5px_0_#111111] dark:border-paper sm:p-8">
+      <span class="inline-block border-2 border-ink bg-yellow px-2 py-1 font-mono text-xs font-bold uppercase dark:border-paper">
+        Focus
+      </span>
+      <p class="mt-4 font-display text-xl font-black uppercase tracking-tight text-ink sm:text-2xl">
+        OpenShift · Multi-cluster · Automation
+      </p>
+    </div>
+  </SectionContainer>
+</LayoutWrapper>

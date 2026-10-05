@@ -1,0 +1,6 @@
+{
+  "title": "Cloudflare Edge Notes",
+  "description": "Field notes on shipping a fully static Astro build to Cloudflare Pages: cache headers, CSP via _headers, and when you actually do need an adapter.",
+  "link": "https://github.com/fajar/cloudflare-edge-notes",
+  "imgSrc": "/static/images/twitter-card.svg"
+}

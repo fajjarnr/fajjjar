@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Astro Tailwind Blog — neo-brutalism">
+  <rect x="0" y="0" width="1200" height="630" fill="#000000"/>
+  <rect x="24" y="24" width="1152" height="582" fill="none" stroke="#fde047" stroke-width="24"/>
+  <text x="600" y="300" font-family="Inter, Arial, sans-serif" font-size="96" font-weight="900" text-anchor="middle" fill="#fde047" letter-spacing="4">ASTRO TAILWIND</text>
+  <text x="600" y="410" font-family="Inter, Arial, sans-serif" font-size="96" font-weight="900" text-anchor="middle" fill="#fde047" letter-spacing="4">BLOG</text>
+  <text x="600" y="520" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="700" text-anchor="middle" fill="#ffffff" letter-spacing="8">neo-brutalism</text>
+</svg>

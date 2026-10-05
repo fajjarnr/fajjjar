@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import LayoutWrapper from '../../components/LayoutWrapper.astro';
+import PageTitle from '../../components/PageTitle.astro';
+import SectionContainer from '../../components/SectionContainer.astro';
+import { slugTag } from '../../utils/blog';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+const counts = new Map<string, { label: string; count: number }>();
+for (const post of posts) {
+  for (const tag of post.data.tags) {
+    const slug = slugTag(tag);
+    const existing = counts.get(slug);
+    counts.set(slug, { label: tag, count: (existing?.count ?? 0) + 1 });
+  }
+}
+
+const tags = [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+
+const accentCycle = ['bg-yellow', 'bg-pink', 'bg-cyan', 'bg-green', 'bg-red'];
+---
+
+<LayoutWrapper title="Tags" description="Browse posts by tag" url="/tags/">
+  <SectionContainer>
+    <PageTitle title="Tags" description={`${tags.length} tags across all posts`} />
+
+    <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {tags.map(([slug, { label, count }], i) => (
+        <li>
+          <a
+            href={`/tags/${slug}/`}
+            class="flex items-center justify-between gap-4 border-2 border-ink px-5 py-4 shadow-[5px_5px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper ${accentCycle[i % accentCycle.length]}"
+          >
+            <span class="font-black uppercase tracking-tight text-ink dark:text-paper">
+              #{label}
+            </span>
+            <span class="border-2 border-ink bg-white px-2 py-0.5 text-sm font-black text-ink dark:border-paper dark:bg-ink dark:text-paper">
+              {count}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </SectionContainer>
+</LayoutWrapper>

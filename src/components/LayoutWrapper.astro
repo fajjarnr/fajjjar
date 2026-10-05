@@ -1,0 +1,85 @@
+---
+import '../styles/global.css';
+import { siteMetadata } from '../data/siteMetadata';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import Analytics from './Analytics.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  url?: string;
+  type?: string;
+  publishedTime?: string;
+  tags?: string[];
+}
+
+const {
+  title = siteMetadata.title,
+  description = siteMetadata.description,
+  image = siteMetadata.socialBanner,
+  url = '/',
+  type = 'website',
+  publishedTime,
+  tags = [],
+} = Astro.props;
+
+const siteUrl = Astro.site?.toString() || 'https://astro-tailwind-blog.pages.dev';
+const fullUrl = new URL(url, siteUrl).href;
+const fullImage = new URL(image, siteUrl).href;
+---
+
+<!doctype html>
+<html lang={siteMetadata.language} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={fullUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={fullUrl} />
+    <meta property="og:image" content={fullImage} />
+    <meta property="og:type" content={type} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {tags.map((tag) => <meta property="article:tag" content={tag} />)}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullImage} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- KaTeX CSS (required for remark-math + rehype-katex output) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" />
+
+    <Analytics />
+
+    <!-- Theme init -->
+    <script is:inline>
+      const theme = localStorage.getItem('theme') || 'system';
+      if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+  </head>
+  <body class="flex min-h-screen flex-col bg-paper text-ink font-body antialiased dark:bg-ink dark:text-paper">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

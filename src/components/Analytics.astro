@@ -1,0 +1,70 @@
+---
+import { siteMetadata } from '../data/siteMetadata';
+
+const {
+  plausibleDataDomain,
+  umamiWebsiteId,
+  simpleAnalytics,
+  googleAnalyticsId,
+  posthogAnalyticsId,
+} = siteMetadata.analytics;
+---
+
+{
+  plausibleDataDomain && (
+    <script
+      is:inline
+      defer
+      data-domain={plausibleDataDomain}
+      src="https://plausible.io/js/script.js"
+    />
+  )
+}
+{
+  umamiWebsiteId && (
+    <script is:inline defer data-website-id={umamiWebsiteId} src="https://cloud.umami.is/script.js" />
+  )
+}
+{
+  simpleAnalytics && (
+    <script is:inline defer src="https://cdn.simpleanalyticscdn.com/latest.js" />
+  )
+}
+{
+  googleAnalyticsId && (
+    <>
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`} />
+      <script
+        is:inline
+        set:html={`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${googleAnalyticsId}');`}
+      />
+    </>
+  )
+}
+{
+  posthogAnalyticsId && (
+    <script
+      is:inline
+      set:html={`(function (t, e) {
+  var p = t.createElement('script');
+  var r = t.getElementsByTagName('script')[0];
+  e.__SV = 1;
+  window.posthog = e;
+  e._i = [];
+  e.init = function (i, s) {
+    e.api_host = s.api_host || 'https://app.posthog.com';
+    p.async = true;
+    p.src = e.api_host + '/static/array.js';
+    r.parentNode.insertBefore(p, r);
+    var u = e[i];
+    if (u) u.call(e);
+    else (e[a = i] = function (t) { e[a].apply(e, t); }).push([i, s]);
+  };
+  e.init('${posthogAnalyticsId}', { api_host: 'https://app.posthog.com' });
+})(document, (window._posthog = window._posthog || []));`}
+    />
+  )
+}

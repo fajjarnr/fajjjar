@@ -1,0 +1,35 @@
+---
+interface Link {
+  href: string;
+  title: string;
+}
+
+interface Props {
+  links: Link[];
+}
+
+const { links } = Astro.props;
+---
+
+<div id="mobile-nav-panel" class="hidden border-b-[3px] border-ink bg-paper dark:border-paper dark:bg-ink md:hidden">
+  <nav class="mx-auto max-w-[1180px] space-y-2 px-4 py-4 sm:px-6">
+    {links.map((link) => (
+      <a
+        href={link.href}
+        class="flex items-center min-h-[44px] border-2 border-ink bg-white px-3 py-2 text-sm font-display font-bold uppercase text-ink shadow-[3px_3px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:bg-yellow hover:shadow-none dark:border-paper dark:bg-ink dark:text-paper dark:hover:bg-yellow dark:hover:text-ink"
+      >
+        {link.title}
+      </a>
+    ))}
+  </nav>
+</div>
+
+<script is:inline>
+  const panel = document.getElementById('mobile-nav-panel');
+  const links = panel?.querySelectorAll('a');
+  links?.forEach((link) => {
+    link.addEventListener('click', () => {
+      panel?.classList.add('hidden');
+    });
+  });
+</script>
