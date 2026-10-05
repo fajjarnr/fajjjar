@@ -7,7 +7,7 @@ import remarkMath from 'remark-math';
 import remarkGithubBlockquoteAlert from 'remark-github-blockquote-alert';
 
 export default defineConfig({
-  site: 'https://astro-tailwind-blog.pages.dev',
+  site: 'https://fajjjar.my.id',
   output: 'static',
   // Top-level markdown config applies to .md AND .mdx content.
   markdown: {
