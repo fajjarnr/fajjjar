@@ -71,7 +71,7 @@ const relatedPosts = allPosts
         {tags.map((tag) => (
           <a
             href={`/tags/${slugTag(tag)}/`}
-            class="inline-block border-2 border-ink bg-yellow px-3 py-1 font-mono text-xs font-bold uppercase text-ink shadow-[3px_3px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:border-paper"
+            class="inline-block border-2 border-ink bg-yellow px-3 py-1 font-mono text-xs font-bold uppercase text-ink shadow-brutal-sm transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:border-paper"
           >
             {tag}
           </a>
@@ -99,7 +99,7 @@ const relatedPosts = allPosts
 
     <!-- Banner image -->
     {banner && (
-      <div class="mt-8 overflow-hidden border-[3px] border-ink shadow-[7px_7px_0_#111111] dark:border-paper">
+      <div class="mt-8 overflow-hidden border-[3px] border-ink shadow-brutal-lg dark:border-paper">
         <img src={banner} alt={title} class="w-full object-cover" />
       </div>
     )}
@@ -108,7 +108,7 @@ const relatedPosts = allPosts
     <Content />
     <!-- Tags -->
     {tags.length > 0 && (
-      <div class="mt-12 border-2 border-ink bg-white p-5 shadow-[5px_5px_0_#111111] dark:border-paper dark:bg-ink reveal">
+      <div class="mt-12 border-2 border-ink bg-white p-5 shadow-brutal-md dark:border-paper dark:bg-ink reveal">
         <h2 class="font-display text-lg font-black uppercase tracking-tight text-ink dark:text-paper">
           Tags
         </h2>
@@ -116,7 +116,7 @@ const relatedPosts = allPosts
           {tags.map((tag) => (
             <a
               href={`/tags/${slugTag(tag)}/`}
-              class="inline-block border-2 border-ink bg-cyan px-3 py-1 font-mono text-xs font-bold uppercase text-ink shadow-[3px_3px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:border-paper"
+              class="inline-block border-2 border-ink bg-cyan px-3 py-1 font-mono text-xs font-bold uppercase text-ink shadow-brutal-sm transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:border-paper"
             >
               #{tag}
             </a>
@@ -127,7 +127,7 @@ const relatedPosts = allPosts
 
     <!-- Table of contents -->
     {toc.length > 0 && (
-      <nav class="mt-6 border-2 border-ink bg-white p-5 shadow-[5px_5px_0_#111111] dark:border-paper dark:bg-ink reveal">
+      <nav class="mt-6 border-2 border-ink bg-white p-5 shadow-brutal-md dark:border-paper dark:bg-ink reveal">
         <h2 class="font-display text-lg font-black uppercase tracking-tight text-ink dark:text-paper">
           On this page
         </h2>
@@ -147,7 +147,7 @@ const relatedPosts = allPosts
     )}
 
     <!-- Share -->
-    <div class="mt-6 border-2 border-ink bg-white p-5 shadow-[5px_5px_0_#111111] dark:border-paper dark:bg-ink reveal">
+    <div class="mt-6 border-2 border-ink bg-white p-5 shadow-brutal-md dark:border-paper dark:bg-ink reveal">
       <h2 class="font-display text-lg font-black uppercase tracking-tight text-ink dark:text-paper">
         Share
       </h2>
@@ -156,7 +156,7 @@ const relatedPosts = allPosts
           href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareText}`}
           target="_blank"
           rel="noopener noreferrer"
-          class="border-2 border-ink bg-cyan px-4 py-2 text-xs font-bold uppercase text-ink shadow-[3px_3px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:border-paper"
+          class="border-2 border-ink bg-cyan px-4 py-2 text-xs font-bold uppercase text-ink shadow-brutal-sm transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:border-paper"
         >
           Twitter
         </a>
@@ -164,13 +164,13 @@ const relatedPosts = allPosts
           href={`https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`}
           target="_blank"
           rel="noopener noreferrer"
-          class="border-2 border-ink bg-green px-4 py-2 text-xs font-bold uppercase text-ink shadow-[3px_3px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:border-paper"
+          class="border-2 border-ink bg-green px-4 py-2 text-xs font-bold uppercase text-ink shadow-brutal-sm transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:border-paper"
         >
           LinkedIn
         </a>
         <a
           href={`mailto:?subject=${shareText}&body=${shareUrl}`}
-          class="border-2 border-ink bg-pink px-4 py-2 text-xs font-bold uppercase text-ink shadow-[3px_3px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:border-paper"
+          class="border-2 border-ink bg-pink px-4 py-2 text-xs font-bold uppercase text-ink shadow-brutal-sm transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none dark:border-paper"
         >
           Email
         </a>
@@ -191,7 +191,7 @@ const relatedPosts = allPosts
             <li>
               <a
                 href={`/blog/${post.slug}/`}
-                class="block border-2 border-ink bg-white p-4 shadow-[3px_3px_0_#111111] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0_#111111] dark:border-paper dark:bg-ink"
+                class="block border-2 border-ink bg-white p-4 shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink"
               >
                 <p class="font-mono text-xs font-bold uppercase text-ink/70 dark:text-paper/70">
                   {formatDate(post.data.date)}

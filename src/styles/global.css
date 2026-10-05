@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --shadow-color: #111111;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -16,6 +20,10 @@ body {
   background-size: 24px 24px;
 }
 
+.dark {
+  --shadow-color: rgba(255, 253, 245, 0.25);
+}
+
 .dark body {
   background-color: #111111;
   color: #FFFDF5;
@@ -24,20 +32,6 @@ body {
     linear-gradient(90deg, rgba(255,253,245,.05) 1px, transparent 1px);
 }
 
-/* Dark mode shadow overrides */
-.dark .card,
-.dark .post-item,
-.dark [class*='shadow-[5px_5px_0_#111111]'],
-.dark [class*='shadow-[7px_7px_0_#111111]'],
-.dark [class*='shadow-[3px_3px_0_#111111]'] {
-  box-shadow: 5px 5px 0 rgba(255, 253, 245, 0.3);
-}
-.dark [class*='shadow-[7px_7px_0_#111111]'] {
-  box-shadow: 7px 7px 0 rgba(255, 253, 245, 0.3);
-}
-.dark [class*='shadow-[3px_3px_0_#111111]'] {
-  box-shadow: 3px 3px 0 rgba(255, 253, 245, 0.3);
-}
 
 .prose {
   max-width: none;

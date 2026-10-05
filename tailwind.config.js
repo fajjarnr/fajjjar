@@ -20,6 +20,12 @@ module.exports = {
         body: ['Inter', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
+      boxShadow: {
+        'brutal-xs': '1px 1px 0 var(--shadow-color)',
+        'brutal-sm': '3px 3px 0 var(--shadow-color)',
+        'brutal-md': '5px 5px 0 var(--shadow-color)',
+        'brutal-lg': '7px 7px 0 var(--shadow-color)',
+      },
       typography: {
         DEFAULT: {
           css: {

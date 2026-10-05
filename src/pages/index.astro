@@ -43,13 +43,13 @@ const recent = posts.slice(1);
       <div class="mt-10 flex flex-wrap gap-4">
         <a
           href="/blog"
-          class="border-2 border-ink bg-pink px-6 py-3 font-black uppercase shadow-[5px_5px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper"
+          class="border-2 border-ink bg-pink px-6 py-3 font-black uppercase shadow-brutal-md transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper"
         >
           Read the blog
         </a>
         <a
           href="/about"
-          class="border-2 border-ink bg-white px-6 py-3 font-black uppercase shadow-[5px_5px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper dark:bg-ink dark:text-paper"
+          class="border-2 border-ink bg-white px-6 py-3 font-black uppercase shadow-brutal-md transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink dark:text-paper"
         >
           About me
         </a>
@@ -79,7 +79,7 @@ const recent = posts.slice(1);
   <!-- Featured post -->
   {featured && (
     <SectionContainer>
-      <div class="border-2 border-ink bg-yellow p-6 shadow-[7px_7px_0_#111111] dark:border-paper sm:p-8 reveal">
+      <div class="border-2 border-ink bg-yellow p-6 shadow-brutal-lg dark:border-paper sm:p-8 reveal">
         <div class="flex flex-wrap items-center gap-3">
           <span class="border-2 border-ink bg-pink px-2 py-1 font-mono text-xs font-bold uppercase dark:border-paper">
             Featured
@@ -123,7 +123,7 @@ const recent = posts.slice(1);
     <ul class="mt-10 grid gap-6 sm:grid-cols-2 reveal">
       {recent.map((post, i) => (
         <li
-          class={`border-2 border-ink bg-white p-6 shadow-[5px_5px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper dark:bg-ink ${i === 0 ? 'sm:col-span-2' : ''}`}
+          class={`border-2 border-ink bg-white p-6 shadow-brutal-md transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink ${i === 0 ? 'sm:col-span-2' : ''}`}
         >
           <div class="flex flex-wrap items-center gap-3">
             <time datetime={post.data.date.toISOString()} class="border-2 border-ink px-2 py-1 font-mono text-xs font-black uppercase dark:border-paper">
@@ -153,7 +153,7 @@ const recent = posts.slice(1);
     <div class="mt-12 flex justify-center">
       <a
         href="/blog"
-        class="border-2 border-ink bg-pink px-8 py-4 font-black uppercase shadow-[7px_7px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[1px_1px_0_#111111] dark:border-paper"
+        class="border-2 border-ink bg-pink px-8 py-4 font-black uppercase shadow-brutal-lg transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper"
       >
         View all posts
       </a>
@@ -162,7 +162,7 @@ const recent = posts.slice(1);
 
   <!-- Editorial callout -->
   <SectionContainer>
-    <div class="border-2 border-ink bg-cyan p-6 shadow-[5px_5px_0_#111111] dark:border-paper sm:p-8 reveal">
+    <div class="border-2 border-ink bg-cyan p-6 shadow-brutal-md dark:border-paper sm:p-8 reveal">
       <span class="inline-block border-2 border-ink bg-yellow px-2 py-1 font-mono text-xs font-bold uppercase dark:border-paper">
         Focus
       </span>

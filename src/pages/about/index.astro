@@ -12,13 +12,13 @@ const { name, avatar, occupation, company, email, twitter, github, linkedin } = 
 <LayoutWrapper title={`About ${name}`} description={`About ${name}`} url="/about/">
   <div class="mx-auto max-w-[760px] px-4 py-12 sm:px-6">
     <!-- Hero card -->
-    <div class="border-2 border-ink bg-white p-6 shadow-[7px_7px_0_#111111] dark:border-paper dark:bg-ink sm:p-8">
+    <div class="border-2 border-ink bg-white p-6 shadow-brutal-lg dark:border-paper dark:bg-ink sm:p-8">
       <div class="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
         {avatar && (
           <img
             src={avatar}
             alt={name}
-            class="h-24 w-24 border-4 border-ink bg-paper-muted object-cover shadow-[5px_5px_0_#111111] dark:border-paper dark:bg-ink sm:h-32 sm:w-32"
+            class="h-24 w-24 border-4 border-ink bg-paper-muted object-cover shadow-brutal-md dark:border-paper dark:bg-ink sm:h-32 sm:w-32"
           />
         )}
         <div>
@@ -45,12 +45,12 @@ const { name, avatar, occupation, company, email, twitter, github, linkedin } = 
     </div>
 
     <!-- Bio -->
-    <div class="about-prose prose mt-8 max-w-none border-2 border-ink bg-white p-6 shadow-[5px_5px_0_#111111] dark:border-paper dark:bg-ink sm:p-8">
+    <div class="about-prose prose mt-8 max-w-none border-2 border-ink bg-white p-6 shadow-brutal-md dark:border-paper dark:bg-ink sm:p-8">
       <Content />
     </div>
 
     <!-- Skills / interests -->
-    <div class="mt-8 border-2 border-ink bg-yellow p-6 shadow-[5px_5px_0_#111111] dark:border-paper">
+    <div class="mt-8 border-2 border-ink bg-yellow p-6 shadow-brutal-md dark:border-paper">
       <h2 class="font-display text-lg font-black uppercase tracking-tight text-ink">
         What I write about
       </h2>
@@ -64,7 +64,7 @@ const { name, avatar, occupation, company, email, twitter, github, linkedin } = 
     </div>
 
     <!-- Career -->
-    <div class="mt-8 border-2 border-ink bg-white p-6 shadow-[5px_5px_0_#111111] dark:border-paper dark:bg-ink">
+    <div class="mt-8 border-2 border-ink bg-white p-6 shadow-brutal-md dark:border-paper dark:bg-ink">
       <h2 class="font-display text-lg font-black uppercase tracking-tight text-ink dark:text-paper">
         Career
       </h2>
@@ -80,7 +80,7 @@ const { name, avatar, occupation, company, email, twitter, github, linkedin } = 
     </div>
 
     <!-- Certifications -->
-    <div class="mt-8 border-2 border-ink bg-cyan p-6 shadow-[5px_5px_0_#111111] dark:border-paper">
+    <div class="mt-8 border-2 border-ink bg-cyan p-6 shadow-brutal-md dark:border-paper">
       <h2 class="font-display text-lg font-black uppercase tracking-tight text-ink">
         Certifications
       </h2>
