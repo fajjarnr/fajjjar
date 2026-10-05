@@ -46,62 +46,64 @@ import { siteMetadata } from '../data/siteMetadata';
 
 
 <script is:inline>
-  const trigger = document.getElementById('search-trigger');
-  const modal = document.getElementById('search-modal');
-  const backdrop = document.getElementById('search-backdrop');
-  const closeBtn = document.getElementById('search-close');
-  const input = document.getElementById('search-input');
-  const results = document.getElementById('search-results');
-  let searchIndex = [];
+  (function() {
+    var trigger = document.getElementById('search-trigger');
+    var modal = document.getElementById('search-modal');
+    var backdrop = document.getElementById('search-backdrop');
+    var closeBtn = document.getElementById('search-close');
+    var input = document.getElementById('search-input');
+    var results = document.getElementById('search-results');
+    var searchIndex = [];
 
-  async function loadSearchIndex() {
-    try {
-      const res = await fetch('/search.json');
-      searchIndex = await res.json();
-    } catch (e) {
-      searchIndex = [];
+    async function loadSearchIndex() {
+      try {
+        var res = await fetch('/search.json');
+        searchIndex = await res.json();
+      } catch (e) {
+        searchIndex = [];
+      }
     }
-  }
 
-  function fuzzySearch(query) {
-    if (!query.trim()) return [];
-    const q = query.toLowerCase();
-    return searchIndex.filter((item) => {
-      const title = (item.title || '').toLowerCase();
-      const summary = (item.summary || '').toLowerCase();
-      const tags = (item.tags || []).join(' ').toLowerCase();
-      return title.includes(q) || summary.includes(q) || tags.includes(q);
-    }).slice(0, 10);
-  }
-
-  function renderResults(items) {
-    if (!results) return;
-    if (items.length === 0) {
-      results.innerHTML = '<p class="px-4 py-3 text-sm font-normal text-ink/70 dark:text-paper/70">No results found.</p>';
-      return;
+    function fuzzySearch(query) {
+      if (!query.trim()) return [];
+      var q = query.toLowerCase();
+      return searchIndex.filter(function(item) {
+        var title = (item.title || '').toLowerCase();
+        var summary = (item.summary || '').toLowerCase();
+        var tags = (item.tags || []).join(' ').toLowerCase();
+        return title.includes(q) || summary.includes(q) || tags.includes(q);
+      }).slice(0, 10);
     }
-    results.innerHTML = items.map((item) => `
-      <a href="${item.url || '#'}" class="block border-2 border-ink bg-white px-3 py-2 shadow-[3px_3px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:bg-yellow hover:shadow-none dark:border-paper dark:bg-ink dark:text-paper dark:hover:bg-yellow dark:hover:text-ink">
-        <p class="text-sm font-bold uppercase text-ink dark:text-paper">${item.title || ''}</p>
-        ${item.summary ? `<p class="mt-0.5 text-xs font-normal text-ink/70 dark:text-paper/70">${item.summary.slice(0, 100)}...</p>` : ''}
-      </a>
-    `).join('');
-  }
 
-  trigger?.addEventListener('click', () => {
-    modal?.classList.remove('hidden');
-    input?.focus();
-    loadSearchIndex();
-  });
+    function renderResults(items) {
+      if (!results) return;
+      if (items.length === 0) {
+        results.innerHTML = '<p class="px-4 py-3 text-sm font-normal text-ink/70 dark:text-paper/70">No results found.</p>';
+        return;
+      }
+      results.innerHTML = items.map(function(item) {
+        return '<a href="' + (item.url || '#') + '" class="block border-2 border-ink bg-white px-3 py-2 shadow-[3px_3px_0_#111111] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:bg-yellow hover:shadow-none dark:border-paper dark:bg-ink dark:text-paper dark:hover:bg-yellow dark:hover:text-ink">' +
+          '<p class="text-sm font-bold uppercase text-ink dark:text-paper">' + (item.title || '') + '</p>' +
+          (item.summary ? '<p class="mt-0.5 text-xs font-normal text-ink/70 dark:text-paper/70">' + item.summary.slice(0, 100) + '...</p>' : '') +
+          '</a>';
+      }).join('');
+    }
 
-  backdrop?.addEventListener('click', () => modal?.classList.add('hidden'));
-  closeBtn?.addEventListener('click', () => modal?.classList.add('hidden'));
+    trigger?.addEventListener('click', function() {
+      modal?.classList.remove('hidden');
+      input?.focus();
+      loadSearchIndex();
+    });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') modal?.classList.add('hidden');
-  });
+    backdrop?.addEventListener('click', function() { modal?.classList.add('hidden'); });
+    closeBtn?.addEventListener('click', function() { modal?.classList.add('hidden'); });
 
-  input?.addEventListener('input', () => {
-    renderResults(fuzzySearch(input?.value || ''));
-  });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') modal?.classList.add('hidden');
+    });
+
+    input?.addEventListener('input', function() {
+      renderResults(fuzzySearch(input?.value || ''));
+    });
+  })();
 </script>

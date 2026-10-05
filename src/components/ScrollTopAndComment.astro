@@ -24,21 +24,23 @@ import { siteMetadata } from '../data/siteMetadata';
 
 
 <script is:inline>
-  const scrollTopBtn = document.getElementById('scroll-top');
+  (function() {
+    var scrollTopBtn = document.getElementById('scroll-top');
 
-  function handleScroll() {
-    if (!scrollTopBtn) return;
-    if (window.scrollY > 300) {
-      scrollTopBtn.classList.remove('hidden');
-    } else {
-      scrollTopBtn.classList.add('hidden');
+    function handleScroll() {
+      if (!scrollTopBtn) return;
+      if (window.scrollY > 300) {
+        scrollTopBtn.classList.remove('hidden');
+      } else {
+        scrollTopBtn.classList.add('hidden');
+      }
     }
-  }
 
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
 
-  scrollTopBtn?.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+    scrollTopBtn?.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
 </script>

@@ -85,21 +85,24 @@ const accentCycle = ['bg-cyan', 'bg-pink', 'bg-green', 'bg-red', 'bg-yellow'];
 </LayoutWrapper>
 
 <script is:inline>
-  const input = document.getElementById('post-filter');
-  const items = Array.from(document.querySelectorAll('.post-item'));
-  const count = document.getElementById('filter-count');
-  const empty = document.getElementById('filter-empty');
-  const total = items.length;
+  (function() {
+    var input = document.getElementById('post-filter');
+    var items = Array.from(document.querySelectorAll('.post-item'));
+    var count = document.getElementById('filter-count');
+    var empty = document.getElementById('filter-empty');
+    var total = items.length;
 
-  input?.addEventListener('input', () => {
-    const q = input.value.trim().toLowerCase();
-    let visible = 0;
-    for (const item of items) {
-      const hit = !q || (item.dataset.search || '').includes(q);
-      item.classList.toggle('hidden', !hit);
-      if (hit) visible++;
-    }
-    if (count) count.textContent = q ? `Showing ${visible} of ${total} posts` : `Showing all ${total} posts`;
-    empty?.classList.toggle('hidden', visible !== 0);
-  });
+    input?.addEventListener('input', function() {
+      var q = input.value.trim().toLowerCase();
+      var visible = 0;
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        var hit = !q || (item.dataset.search || '').includes(q);
+        item.classList.toggle('hidden', !hit);
+        if (hit) visible++;
+      }
+      if (count) count.textContent = q ? 'Showing ' + visible + ' of ' + total + ' posts' : 'Showing all ' + total + ' posts';
+      empty?.classList.toggle('hidden', visible !== 0);
+    });
+  })();
 </script>
