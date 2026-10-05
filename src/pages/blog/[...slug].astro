@@ -2,7 +2,7 @@
 import { getCollection, getEntry, render, type CollectionEntry } from 'astro:content';
 import LayoutWrapper from '../../components/LayoutWrapper.astro';
 import PostFooter from '../../components/PostFooter.astro';
-import { formatDateLong, readingTime, slugTag } from '../../utils/blog';
+import { formatDate, formatDateLong, readingTime, slugTag } from '../../utils/blog';
 import { siteMetadata } from '../../data/siteMetadata';
 
 export async function getStaticPaths() {
@@ -45,6 +45,16 @@ const resolvedAuthors = (
 const shareUrl = new URL(url, siteMetadata.siteUrl).href;
 const shareText = encodeURIComponent(title);
 const banner = layout === 'PostBanner' ? images?.[0] : undefined;
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const relatedPosts = allPosts
+  .filter((p) => p.slug !== entry.slug)
+  .map((p) => ({
+    ...p,
+    commonTags: p.data.tags.filter((t) => tags.includes(t)).length,
+  }))
+  .sort((a, b) => b.commonTags - a.commonTags || b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 ---
 
 <LayoutWrapper
@@ -169,6 +179,32 @@ const banner = layout === 'PostBanner' ? images?.[0] : undefined;
 
     <!-- Author + Newsletter + Comments -->
     <PostFooter authors={resolvedAuthors} />
+
+    <!-- Related posts -->
+    {relatedPosts.length > 0 && (
+      <div class="mt-12 border-t-4 border-ink pt-8 dark:border-paper">
+        <h2 class="font-display text-lg font-black uppercase tracking-tight text-ink dark:text-paper">
+          Related posts
+        </h2>
+        <ul class="mt-6 grid gap-4 sm:grid-cols-3">
+          {relatedPosts.map((post) => (
+            <li>
+              <a
+                href={`/blog/${post.slug}/`}
+                class="block border-2 border-ink bg-white p-4 shadow-[3px_3px_0_#111111] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0_#111111] dark:border-paper dark:bg-ink"
+              >
+                <p class="font-mono text-xs font-bold uppercase text-ink/70 dark:text-paper/70">
+                  {formatDate(post.data.date)}
+                </p>
+                <h3 class="mt-2 font-display text-sm font-black uppercase tracking-tight text-ink dark:text-paper">
+                  {post.data.title}
+                </h3>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
   </article>
 
 <!-- Reading progress bar -->
