@@ -28,12 +28,10 @@ import MobileNav from './MobileNav.astro';
           {link.title}
         </a>
       ))}
-      <ThemeSwitch />
     </div>
 
     <!-- Mobile controls -->
     <div class="flex items-center gap-2 md:hidden">
-      <ThemeSwitch />
       <button
         id="mobile-menu-toggle"
         type="button"
@@ -45,6 +43,7 @@ import MobileNav from './MobileNav.astro';
         </svg>
       </button>
     </div>
+    <ThemeSwitch />
   </nav>
 
   <MobileNav links={headerNavLinks} />
