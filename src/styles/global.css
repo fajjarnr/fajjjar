@@ -32,6 +32,27 @@ body {
     linear-gradient(90deg, rgba(255,253,245,.05) 1px, transparent 1px);
 }
 
+/* Dark mode prose text colors */
+.dark .post-prose.prose {
+  --tw-prose-body: #FFFDF5;
+  --tw-prose-headings: #FFFDF5;
+  --tw-prose-links: #FFFDF5;
+  --tw-prose-bold: #FFFDF5;
+  --tw-prose-quotes: #FFFDF5;
+  --tw-prose-captions: rgba(255, 253, 245, 0.7);
+  --tw-prose-code: #FFFDF5;
+}
+
+.dark .about-prose.prose {
+  --tw-prose-body: #FFFDF5;
+  --tw-prose-headings: #FFFDF5;
+  --tw-prose-links: #FFFDF5;
+  --tw-prose-bold: #FFFDF5;
+  --tw-prose-quotes: #FFFDF5;
+  --tw-prose-captions: rgba(255, 253, 245, 0.7);
+  --tw-prose-code: #FFFDF5;
+}
+
 
 .prose {
   max-width: none;
@@ -210,6 +231,52 @@ a:active {
   }
 }
 
+/* Gradient border animation on hover */
+.card::before,
+.post-item::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, #FFE500, #FF1493, #00D9FF, #22F06B) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.card:hover::before,
+.post-item:hover::before {
+  opacity: 1;
+}
+
+/* Hover glow on primary buttons */
+.bg-pink:hover,
+.bg-yellow:hover,
+.bg-cyan:hover,
+.bg-green:hover {
+  filter: brightness(1.1);
+}
+
+/* Staggered reveal delays */
+.reveal-delay-1 { animation-delay: 0.1s; }
+.reveal-delay-2 { animation-delay: 0.2s; }
+.reveal-delay-3 { animation-delay: 0.3s; }
+
+/* Card hover lift */
+.card:hover,
+.post-item:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0 var(--shadow-color);
+}
+
+/* Dark mode card hover */
+.dark .card:hover,
+.dark .post-item:hover {
+  box-shadow: 2px 2px 0 rgba(255, 253, 245, 0.3);
+}
+
 .prose a {
   color: #FF1493;
   text-underline-offset: 2px;
@@ -249,6 +316,7 @@ a:active {
 }
 
 .card {
+  position: relative;
   border: 2px solid #111111;
   background: #FFFFFF;
   padding: 1.5rem;
@@ -259,6 +327,10 @@ a:active {
 .card:hover {
   transform: translate(3px, 3px);
   box-shadow: 2px 2px 0 #111111;
+}
+
+.post-item {
+  position: relative;
 }
 
 .tag {
