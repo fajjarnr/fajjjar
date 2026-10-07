@@ -428,15 +428,15 @@ select {
    Balance both margins and clear the glyph box. No `text-wrap: balance` here:
    it deliberately shortens every line to even them out, which leaves a third
    of the column empty while a word could still have fitted.
-   The rule under the title is Alert Magenta: the action colour marking the one
-   heading on the page, not a decorative underline. */
+   The rule under the title is ink, matching the text: at heading weight the
+   underline reads as part of the lettering, and a colour here competed with
+   the signal accents rather than supporting them. */
 .post-prose.prose h1 {
   /* 1.4, not 1.25: the 4px rule at 10px offset sits close under the caps, so a
      wrapped second line needs the extra 12px of clearance to read cleanly. */
   line-height: 1.4;
   margin-top: 0;
   margin-bottom: 1.5rem;
-  text-decoration-color: #FF1493;
 }
 
 /* The tag row carries mb-6, so the title's own top margin would otherwise
