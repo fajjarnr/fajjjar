@@ -64,6 +64,12 @@
         "canonical": "oklch(77.7% 0.132 32.1)",
         "tonalRamp": ["#300000", "#540000", "#791A09", "#9E3E2D", "#C4614E", "#EC846F", "#FFA892", "#FFCDB6"]
       },
+      "alert-magenta-text": {
+        "role": "primary",
+        "displayName": "Alert Magenta Text",
+        "canonical": "oklch(58.1% 0.261 356.9)",
+        "tonalRamp": ["#44000C", "#6E0027", "#980044", "#C30063", "#E01281", "#FF3CA7", "#FF6BCC", "#FF94F1"]
+      },
       "auxiliary-violet": {
         "role": "tertiary",
         "displayName": "Auxiliary Violet",
@@ -202,7 +208,8 @@
       { "name": "The Zero-Blur Rule", "body": "Every shadow in the system has a 0px blur radius and a 0px spread. Blur is banned; if depth needs to read stronger, increase the offset or the tier, not the softness.", "section": "elevation" },
       { "name": "The Signal Word Rule", "body": "A readout's tag states the state in words — Reading, Index, Query, No signal, Fault — and never appears as colour alone. The accent reinforces the word; it does not replace it.", "section": "components" },
       { "name": "The Data Case Rule", "body": "Readout chrome is uppercase mono, but a value the reader supplied or a real path keeps its own case: a requested path renders /blog/nope/, not /BLOG/NOPE/. Uppercase is for labels, never for data.", "section": "components" },
-      { "name": "The Instrument, Not Container Rule", "body": "A readout marks a moment the visitor must read or act on. Do not wrap ordinary page content in one, and do not stack readouts; a page has one instrument or none.", "section": "components" }
+      { "name": "The Instrument, Not Container Rule", "body": "A readout marks a moment the visitor must read or act on. Do not wrap ordinary page content in one, and do not stack readouts; a page has one instrument or none.", "section": "components" },
+      { "name": "The Link Contrast Rule", "body": "Prose links use the Alert Magenta Text tier (#E01281) in the light theme and full-chroma Alert Magenta (#FF1493) in the dark theme. Full-chroma magenta fails 4.5:1 on every light surface in this system; a link is text first and a signal second.", "section": "colors" }
     ],
     "dos": [
       "Do bound every surface with a 2–4px Console Black rule. An unboxed surface is not part of this system.",

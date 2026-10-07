@@ -84,20 +84,25 @@ const relatedPosts = allPosts
           </div>
         )}
 
-        <!-- Title -->
-        <h1 class="font-display text-4xl font-black uppercase leading-tight tracking-tight text-ink dark:text-paper sm:text-5xl break-words">
+        <!-- Title. Line-height lives in global.css, not here: Tailwind's
+             text-5xl also emits a line-height, and it wins over leading-*. -->
+        <h1 class="font-display text-4xl font-black uppercase italic tracking-tight text-ink underline decoration-4 underline-offset-[10px] dark:text-paper sm:text-5xl break-words">
           {title}
         </h1>
 
-        <!-- Meta -->
-        <div class="mt-6 flex flex-wrap items-center gap-3 text-xs font-bold uppercase text-ink/70 dark:text-paper/70">
-          <time datetime={date.toISOString()}>{formatDateLong(date)}</time>
+        <!-- Meta: same chip treatment the listing cards use, so a date reads
+             the same wherever it appears. Date is the bordered chip, reading
+             time carries the information accent. -->
+        <div class="mt-6 flex flex-wrap items-center gap-2 font-mono text-xs font-black uppercase">
+          <time datetime={date.toISOString()} class="border-2 border-ink px-2 py-1 text-ink dark:border-paper dark:text-paper">
+            {formatDateLong(date)}
+          </time>
           {lastmod && (
-            <span>
+            <span class="border-2 border-ink px-2 py-1 text-ink dark:border-paper dark:text-paper">
               Updated {formatDateLong(lastmod)}
             </span>
           )}
-          <span>
+          <span class="border-2 border-ink bg-cyan px-2 py-1 text-ink dark:border-paper dark:bg-cyan dark:text-ink">
             {readingMinutes} min read
           </span>
         </div>
@@ -109,8 +114,10 @@ const relatedPosts = allPosts
           </div>
         )}
 
-        <!-- Content -->
-        <div class="mt-12">
+        <!-- Content: Panel White, bounded by the system's 2px rule and a Brutal
+             MD shadow, so the prose column reads as a raised surface like every
+             other panel. Padding matches the card tier (24px, 32px from sm). -->
+        <div class="mt-12 border-2 border-ink bg-white p-6 shadow-brutal-md dark:border-paper dark:bg-ink sm:p-8">
           <Content />
         </div>
 

@@ -8,6 +8,7 @@ colors:
   panel-white: "#FFFFFF"
   caution-yellow: "#FFE500"
   alert-magenta: "#FF1493"
+  alert-magenta-text: "#E01281"
   telemetry-cyan: "#00D9FF"
   nominal-green: "#22F06B"
   fault-red: "#FF4B3E"
@@ -144,7 +145,8 @@ The register is **calm operations**: bright signals, ordered layout, no ornament
 A high-chroma signal palette on warm off-white stock, bound together by near-black ink. Every accent is light enough to carry black text at AA or better.
 
 ### Primary
-- **Alert Magenta** (#FF1493): the action colour. Primary buttons, featured badges, and prose links in article body. Reserved for things the visitor should act on or notice; it is the loudest colour in the system and the most rationed (5.19:1 with ink).
+- **Alert Magenta** (#FF1493): the action colour. Primary buttons, featured badges, the "Featured" flag, and prose links in the dark theme. Reserved for things the visitor should act on or notice; it is the loudest colour in the system and the most rationed (5.19:1 with ink, which is why it stays at full chroma on dark grounds).
+- **Alert Magenta Text** (#E01281): the light-theme tier of the same hue, scaled to 88% lightness. Prose links in article body only. Full-chroma magenta is 3.64:1 on Panel White and 3.57:1 on Chart Paper — both under the 4.5:1 floor this system commits to — while this tier reads 4.59:1 on Panel White and 4.51:1 on Chart Paper.
 - **Caution Yellow** (#FFE500): the state and utility colour. Sticky header strip, tag badges, topic chips, icon buttons, newsletter accents, selection highlight. Also the default focus ring's contrast partner. Highest-legibility accent in the set (14.8:1 with ink).
 
 ### Secondary

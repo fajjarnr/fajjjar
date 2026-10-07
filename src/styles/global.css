@@ -374,9 +374,17 @@ select {
   }
 }
 
+/* Prose links. Alert Magenta at full chroma is 3.64:1 on the white panel and
+   3.57:1 on chart paper — under the 4.5:1 floor DESIGN.md sets. This is that
+   hue scaled to 88% lightness: 4.59:1 on Panel White, 4.51:1 on Chart Paper.
+   The dark theme keeps the brighter #FF1493, which reads 5.19:1 on ink. */
 .prose :where(p, li, td, blockquote) a {
-  color: #FF1493;
+  color: #E01281;
   text-underline-offset: 2px;
+}
+
+.dark .prose :where(p, li, td, blockquote) a {
+  color: #FF1493;
 }
 
 .prose :where(p, li, td, blockquote) a:hover {
@@ -406,6 +414,29 @@ select {
 .prose th {
   background: #F3F0E6;
   font-weight: 900;
+}
+
+
+/* The post title. Three separate problems lived here:
+   1. Space Grotesk's glyph box at 900 weight is taller than its em, so a 1.0
+      line-height made a two-line title's lines overlap by 13px and pushed the
+      ink 6px outside the box on both sides.
+   2. Tailwind's text-5xl also emits a line-height and wins over leading-*, so
+      this fix has to live here rather than in the utility list.
+   3. The typography plugin gives h1 a 42px bottom margin and almost no top
+      margin, which read as cramped above and loose below.
+   Balance both margins, clear the glyph box, and keep wrapping titles even. */
+.post-prose.prose h1 {
+  line-height: 1.25;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  text-wrap: balance;
+}
+
+/* The tag row carries mb-6, so the title's own top margin would otherwise
+   collapse into the larger of the two. Add space above it explicitly. */
+.post-prose.prose > div.mb-6 + h1 {
+  margin-top: 1.5rem;
 }
 
 /* Post page prose overrides */

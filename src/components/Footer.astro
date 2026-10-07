@@ -3,13 +3,39 @@ import { siteMetadata } from '../data/siteMetadata';
 import SocialIcons from './SocialIcons.astro';
 
 const year = new Date().getFullYear();
+
+// One class string for every footer link so Navigate and Topics cannot drift
+// apart: both are 44px tap targets with the system's 2px underline, which
+// thickens to 4px on hover.
+const linkClass =
+  'flex min-h-[44px] items-center font-bold text-ink underline decoration-2 underline-offset-4 transition-all hover:decoration-4 dark:text-paper';
+
+const navigate = [
+  { href: '/blog', label: 'Blog' },
+  { href: '/tags', label: 'Tags' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/about', label: 'About' },
+];
+
+const topics = [
+  { href: '/tags/astro', label: 'Astro' },
+  { href: '/tags/guide', label: 'Guides' },
+  { href: '/tags/markdown', label: 'Markdown' },
+  { href: '/tags/code', label: 'Code' },
+];
+
+const columnLabel = 'font-mono text-xs font-bold uppercase tracking-tight text-ink/70 dark:text-paper/70';
 ---
 
 <footer class="border-t-4 border-ink bg-paper dark:border-paper dark:bg-ink">
   <div class="mx-auto max-w-[1180px] px-4 py-12 sm:px-6">
-    <div class="grid gap-8 sm:grid-cols-3">
+    <!--
+      Mobile: Navigate and Topics are peers, so they sit side by side and the
+      brand block takes the full width above them. Three columns from `sm` up.
+    -->
+    <div class="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 sm:gap-x-8">
       <!-- Brand -->
-      <div>
+      <div class="col-span-2 sm:col-span-1">
         <p class="font-display text-xl font-black uppercase tracking-tight text-ink dark:text-paper">
           {siteMetadata.headerTitle}
         </p>
@@ -22,29 +48,28 @@ const year = new Date().getFullYear();
       </div>
 
       <!-- Navigation -->
-      <div>
-        <p class="font-mono text-xs font-bold uppercase tracking-tight text-ink/70 dark:text-paper/70">
-          Navigate
-        </p>
-        <ul class="mt-3 space-y-2">
-          <li><a href="/blog" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper inline-block py-2 min-h-[44px] flex items-center">Blog</a></li>
-          <li><a href="/tags" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper inline-block py-2 min-h-[44px] flex items-center">Tags</a></li>
-          <li><a href="/projects" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper inline-block py-2 min-h-[44px] flex items-center">Projects</a></li>
-          <li><a href="/about" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper inline-block py-2 min-h-[44px] flex items-center">About</a></li>
+      <nav aria-labelledby="footer-navigate">
+        <h2 id="footer-navigate" class={columnLabel}>Navigate</h2>
+        <ul class="mt-1">
+          {navigate.map((link) => (
+            <li>
+              <a href={link.href} class={linkClass}>{link.label}</a>
+            </li>
+          ))}
         </ul>
-      </div>
+      </nav>
+
       <!-- Topics -->
-      <div>
-        <p class="font-mono text-xs font-bold uppercase tracking-tight text-ink/70 dark:text-paper/70">
-          Topics
-        </p>
-        <ul class="mt-3 space-y-2">
-          <li><a href="/tags/astro" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper">Astro</a></li>
-          <li><a href="/tags/guide" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper">Guides</a></li>
-          <li><a href="/tags/markdown" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper">Markdown</a></li>
-          <li><a href="/tags/code" class="font-bold text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper">Code</a></li>
+      <nav aria-labelledby="footer-topics">
+        <h2 id="footer-topics" class={columnLabel}>Topics</h2>
+        <ul class="mt-1">
+          {topics.map((link) => (
+            <li>
+              <a href={link.href} class={linkClass}>{link.label}</a>
+            </li>
+          ))}
         </ul>
-      </div>
+      </nav>
     </div>
 
     <div class="mt-10 border-t-2 border-ink pt-6 dark:border-paper">
