@@ -56,9 +56,13 @@ posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     <ul class="stagger mt-10 space-y-6">
       {posts.map((post) => (
         <li class="border-2 border-ink bg-white p-6 shadow-brutal-md transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink">
-          <div class="flex flex-wrap items-center gap-3 text-xs font-black uppercase">
-            <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-            <span class="border-2 border-ink bg-yellow px-2 py-1 text-ink dark:border-paper">
+          <!-- Same chip treatment the home feed and blog listing use, so a date
+               reads the same wherever it appears. -->
+          <div class="flex flex-wrap items-center gap-3 font-mono text-xs font-black uppercase">
+            <time datetime={post.data.date.toISOString()} class="border-2 border-ink px-2 py-1 text-ink dark:border-paper dark:text-paper">
+              {formatDate(post.data.date)}
+            </time>
+            <span class="border-2 border-ink bg-yellow px-2 py-1 text-ink dark:border-paper dark:bg-yellow dark:text-ink">
               {readingTime(post.body)} min read
             </span>
           </div>

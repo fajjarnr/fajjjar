@@ -48,10 +48,10 @@ const accentCycle = ['bg-cyan', 'bg-pink', 'bg-green', 'bg-red', 'bg-yellow'];
               <span class="border-2 border-ink bg-pink px-2 py-1 font-mono text-xs font-black uppercase text-ink dark:border-paper dark:bg-pink dark:text-ink">
                 Featured
               </span>
-              <time datetime={featured.data.date.toISOString()} class="font-mono text-xs font-bold uppercase text-ink/70 dark:text-paper/70">
+              <time datetime={featured.data.date.toISOString()} class="border-2 border-ink px-2 py-1 font-mono text-xs font-black uppercase text-ink dark:border-paper dark:text-paper">
                 {formatDate(featured.data.date)}
               </time>
-              <span class="font-mono text-xs font-bold text-ink/70 dark:text-paper/70">
+              <span class="border-2 border-ink bg-cyan px-2 py-1 font-mono text-xs font-black uppercase text-ink dark:border-paper dark:bg-cyan dark:text-ink">
                 {readingTime(featured.body)} min read
               </span>
             </div>
