@@ -5,4 +5,10 @@ dist/
 .env
 .env.production
 *.local
+
+# Impeccable: keep the shared design artifacts (design.json, config.json,
+# critique), ignore machine-local state — the live server's pid, sessions,
+# inject journal, and absolute paths.
+.impeccable/config.local.json
+.impeccable/live/
 .DS_Store

@@ -1,14 +1,36 @@
 ---
+import { getCollection } from 'astro:content';
 import LayoutWrapper from '../components/LayoutWrapper.astro';
+
+// Real numbers for the readout below: the fault report should point somewhere.
+const posts = await getCollection('blog', ({ data }) => !data.draft);
 ---
 
 <LayoutWrapper title="404 — Page Not Found" description="The page you are looking for does not exist" url="/404/">
-  <section class="mx-auto flex max-w-[760px] flex-col items-center px-4 py-20 text-center sm:px-6 sm:py-32 reveal">
-    <p class="border-4 border-ink bg-pink px-6 py-2 font-black uppercase tracking-tight text-ink shadow-brutal-md dark:border-paper">
-      Error
-    </p>
+  <section class="mx-auto flex max-w-[760px] flex-col items-center px-4 py-20 sm:px-6 sm:py-32 reveal">
+    <!-- Fault report: what was requested, what came back, what is still available -->
+    <div class="readout readout--fault w-full text-left">
+      <div class="readout-head">
+        <span class="readout-tag">Fault</span>
+        <span class="ml-auto truncate">Route not found</span>
+      </div>
+      <div class="readout-body grid gap-1">
+        <div class="flex flex-wrap items-baseline justify-between gap-x-4">
+          <span class="text-ink/70 dark:text-paper/70">Requested</span>
+          <span id="fault-path" class="min-w-0 truncate normal-case">/</span>
+        </div>
+        <div class="flex flex-wrap items-baseline justify-between gap-x-4">
+          <span class="text-ink/70 dark:text-paper/70">Response</span>
+          <span>404 — not found</span>
+        </div>
+        <div class="flex flex-wrap items-baseline justify-between gap-x-4">
+          <span class="text-ink/70 dark:text-paper/70">Index</span>
+          <span>{posts.length} documents available</span>
+        </div>
+      </div>
+    </div>
 
-    <p class="mt-8 font-display font-black uppercase leading-none tracking-tight text-ink dark:text-paper text-7xl sm:text-9xl md:text-[11rem]">
+    <p class="mt-10 font-display font-black uppercase leading-none tracking-tight text-ink dark:text-paper text-7xl sm:text-9xl md:text-[11rem]">
       404
     </p>
 
@@ -33,6 +55,28 @@ import LayoutWrapper from '../components/LayoutWrapper.astro';
       >
         Browse the blog
       </a>
+      <button
+        id="fault-search"
+        type="button"
+        class="border-2 border-ink bg-white px-6 py-3 font-black uppercase text-ink shadow-brutal-md transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink dark:text-paper"
+      >
+        Search instead
+      </button>
     </div>
   </section>
+
+  <script is:inline>
+    (function () {
+      var path = document.getElementById('fault-path');
+      if (path) path.textContent = window.location.pathname;
+
+      var search = document.getElementById('fault-search');
+      var trigger = document.getElementById('search-trigger');
+      if (search && trigger) {
+        search.addEventListener('click', function () {
+          trigger.click();
+        });
+      }
+    })();
+  </script>
 </LayoutWrapper>

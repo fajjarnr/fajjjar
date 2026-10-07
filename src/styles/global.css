@@ -4,6 +4,12 @@
 
 :root {
   --shadow-color: #111111;
+  /* One arrival curve for the whole system. No bounce, no elastic: things
+     land, they do not spring. */
+  --ease-arrive: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-feedback: 120ms;
+  --dur-state: 200ms;
+  --dur-settle: 380ms;
 }
 
 html {
@@ -77,6 +83,12 @@ body {
   font-size: 0.875rem;
 }
 
+.dark .prose code {
+  border-color: #FFFDF5;
+  background: #111111;
+  color: #FFFDF5;
+}
+
 .prose pre code {
   border: 0;
   background: transparent;
@@ -105,10 +117,9 @@ body {
   font-size: 1.1em;
 }
 
-/* Smooth transitions */
-a, button, input, textarea, select {
-  transition: all 0.15s ease;
-}
+/* Interaction transitions are declared per control, not globally: `all` on
+   every link and button also animates colour, border, and layout, which is
+   both slower and less legible than naming the two properties that move. */
 
 /* Selection color */
 ::selection {
@@ -147,17 +158,6 @@ a, button, input, textarea, select {
   }
 }
 
-/* Eye-catching hover effects */
-.card:hover,
-.post-item:hover {
-  transform: translate(3px, 3px);
-  box-shadow: 2px 2px 0 #111111;
-}
-
-.dark .card:hover,
-.dark .post-item:hover {
-  box-shadow: 2px 2px 0 rgba(255, 253, 245, 0.3);
-}
 
 /* Button press effect */
 button:active,
@@ -167,21 +167,25 @@ a:active {
 }
 
 /* Link underline animation */
-.prose a {
+/* Article links only. Badges and chips are anchors too; they carry their own
+   text colour, so exclude anything with a border utility. */
+.prose :where(p, li, td, blockquote) a {
   position: relative;
 }
-.prose a::after {
+.prose :where(p, li, td, blockquote) a::after {
   content: '';
   position: absolute;
   bottom: -2px;
   left: 0;
-  width: 0;
   height: 2px;
-  background: #FF1493;
-  transition: width 0.2s ease;
-}
-.prose a:hover::after {
   width: 100%;
+  background: #FF1493;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+.prose :where(p, li, td, blockquote) a:hover::after {
+  transform: scaleX(1);
 }
 
 /* Image hover zoom */
@@ -192,15 +196,6 @@ a:active {
   transform: scale(1.02);
 }
 
-/* Badge hover wiggle */
-.tag:hover {
-  animation: wiggle 0.3s ease;
-}
-@keyframes wiggle {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-2deg); }
-  75% { transform: rotate(2deg); }
-}
 
 /* Focus visible glow */
 *:focus-visible {
@@ -209,46 +204,129 @@ a:active {
   box-shadow: 0 0 0 6px rgba(0, 217, 255, 0.2);
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+/* ---------------------------------------------------------------------------
+   Motion
+   The world is an instrument panel, so nothing springs and nothing floats:
+   things power on, read out, and land. One arrival curve for the whole system,
+   three durations, and every effect a transform, an opacity, or a stroke.
+   --------------------------------------------------------------------------- */
+
+/* Feedback: the press is the system's only hover transition, and it must stay
+   faster than the pointer to read as a physical press rather than a slide. */
+a,
+button,
+input,
+textarea,
+select {
+  transition:
+    transform var(--dur-feedback) ease-out,
+    box-shadow var(--dur-feedback) ease-out,
+    background-color var(--dur-state) ease,
+    color var(--dur-state) ease,
+    border-color var(--dur-state) ease;
+}
+
+/* An element that is itself a transform is not a good transform target. The
+   scroll-top button and the reading instrument are moved by their own motion,
+   so their interactions stay on colour and shadow. */
+#scroll-top,
+#reading-instrument {
+  transition:
+    box-shadow var(--dur-feedback) ease-out,
+    background-color var(--dur-state) ease,
+    border-color var(--dur-state) ease;
+}
+
+/* Entrance: the one authored arrival. Sections come up 16px and settle, on the
+   shared curve, staggered by the list they belong to rather than by scroll. */
+@keyframes boot-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
 .reveal {
-  animation: fadeUp 0.6s ease-out forwards;
+  animation: boot-up 520ms var(--ease-arrive) both;
 }
 
-.reveal-delay-1 { animation-delay: 0.1s; }
-.reveal-delay-2 { animation-delay: 0.2s; }
-.reveal-delay-3 { animation-delay: 0.3s; }
+/* Sibling stagger: capped at 6 steps so a long list never makes the reader
+   wait for the last item. */
+.stagger > * {
+  animation: boot-up 520ms var(--ease-arrive) both;
+}
 
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    animation: none;
+.stagger > :nth-child(1) { animation-delay: 0ms; }
+.stagger > :nth-child(2) { animation-delay: 60ms; }
+.stagger > :nth-child(3) { animation-delay: 120ms; }
+.stagger > :nth-child(4) { animation-delay: 180ms; }
+.stagger > :nth-child(5) { animation-delay: 240ms; }
+.stagger > :nth-child(6) { animation-delay: 300ms; }
+
+/* Control feedback: the search dialog settles down from above on the arrival
+   curve, and the scroll-top button slides in from the edge it belongs to.
+   Both are enter-and-stay, so they run once and hold. */
+@keyframes panel-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
-/* Gradient border animation on hover */
-.card::before,
-.post-item::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border: 2px solid transparent;
-  background: linear-gradient(135deg, #FFE500, #FF1493, #00D9FF, #22F06B) border-box;
-  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
+@keyframes panel-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-.card:hover::before,
-.post-item:hover::before {
-  opacity: 1;
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+#search-backdrop {
+  animation: panel-fade var(--dur-state) ease both;
+}
+
+#search-modal .relative {
+  animation: panel-drop var(--dur-settle) var(--ease-arrive) both;
+}
+
+/* The scroll-top button's enter animation runs on a child, so the button's own
+   transform stays free for its hover press. */
+#scroll-top svg {
+  animation: slide-in-right var(--dur-settle) var(--ease-arrive) both;
+}
+
+/* Search results land in sequence: the readout body reports, then the hits. */
+#search-results > a {
+  animation: boot-up 260ms var(--ease-arrive) both;
+}
+
+#search-results > a:nth-child(1) { animation-delay: 0ms; }
+#search-results > a:nth-child(2) { animation-delay: 40ms; }
+#search-results > a:nth-child(3) { animation-delay: 80ms; }
+#search-results > a:nth-child(4) { animation-delay: 120ms; }
+#search-results > a:nth-child(5) { animation-delay: 160ms; }
+#search-results > a:nth-child(n + 6) { animation-delay: 200ms; }
+
+/* The reading meter fills a segment at a time instead of switching, so the
+   level reads as a level rather than as twelve unrelated squares. */
+.readout-level span {
+  transition: background-color 180ms ease;
 }
 
 /* Hover glow on primary buttons */
@@ -259,36 +337,56 @@ a:active {
   filter: brightness(1.1);
 }
 
-/* Staggered reveal delays */
-.reveal-delay-1 { animation-delay: 0.1s; }
-.reveal-delay-2 { animation-delay: 0.2s; }
-.reveal-delay-3 { animation-delay: 0.3s; }
-
-/* Card hover lift */
-.card:hover,
+/* Post list hover press (matches the inline utility behaviour) */
 .post-item:hover {
   transform: translate(3px, 3px);
   box-shadow: 2px 2px 0 var(--shadow-color);
 }
 
-/* Dark mode card hover */
-.dark .card:hover,
 .dark .post-item:hover {
   box-shadow: 2px 2px 0 rgba(255, 253, 245, 0.3);
 }
 
-.prose a {
+/* Reduced motion keeps every state change and drops the movement: arrivals
+   become a plain fade, stagger and loops go, and the press stays instant. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .stagger > *,
+  #search-results > a {
+    animation: panel-fade 200ms ease both;
+    animation-delay: 0ms !important;
+  }
+
+  #search-modal .relative,
+  #scroll-top svg {
+    animation: panel-fade 200ms ease both;
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    transition:
+      background-color var(--dur-state) ease,
+      color var(--dur-state) ease,
+      border-color var(--dur-state) ease;
+  }
+}
+
+.prose :where(p, li, td, blockquote) a {
   color: #FF1493;
   text-underline-offset: 2px;
 }
 
-.prose a:hover {
+.prose :where(p, li, td, blockquote) a:hover {
   text-decoration: underline;
 }
 
 .prose blockquote {
   border-left: 4px solid #111111;
   background: #FFE500;
+  color: #111111;
   padding: 1rem;
   font-weight: 700;
   font-style: normal;
@@ -308,47 +406,6 @@ a:active {
 .prose th {
   background: #F3F0E6;
   font-weight: 900;
-}
-
-*:focus-visible {
-  outline: 3px solid #00D9FF;
-  outline-offset: 3px;
-}
-
-.card {
-  position: relative;
-  border: 2px solid #111111;
-  background: #FFFFFF;
-  padding: 1.5rem;
-  transition: all 0.15s ease;
-  box-shadow: 5px 5px 0 #111111;
-}
-
-.card:hover {
-  transform: translate(3px, 3px);
-  box-shadow: 2px 2px 0 #111111;
-}
-
-.post-item {
-  position: relative;
-}
-
-.tag {
-  display: inline-block;
-  border: 2px solid #111111;
-  background: #00D9FF;
-  padding: 0.25rem 0.75rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.875rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
 }
 
 /* Post page prose overrides */
@@ -376,14 +433,14 @@ a:active {
   font-size: 1.5rem;
 }
 
-.post-prose.prose a {
+.post-prose.prose :where(p, li, td, blockquote) a {
   font-weight: 700;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
 }
 
-.post-prose.prose a:hover {
+.post-prose.prose :where(p, li, td, blockquote) a:hover {
   text-decoration-thickness: 4px;
 }
 
@@ -457,14 +514,14 @@ a:active {
   border-bottom-color: #FFFDF5;
 }
 
-.about-prose.prose a {
+.about-prose.prose :where(p, li, td, blockquote) a {
   font-weight: 700;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
 }
 
-.about-prose.prose a:hover {
+.about-prose.prose :where(p, li, td, blockquote) a:hover {
   text-decoration-thickness: 4px;
 }
 
@@ -535,4 +592,288 @@ a:active {
 .post-prose.prose .token.important,
 .post-prose.prose .token.variable {
   color: #FF9580;
+}
+
+/* ---------------------------------------------------------------------------
+   Console readouts
+   The instrument vocabulary for states, not pages: article telemetry, empty
+   result sets, missing routes. A readout is a bordered panel whose header row
+   names the signal in mono and whose body reports machine values. The signal
+   word carries the meaning; the accent only reinforces it.
+   --------------------------------------------------------------------------- */
+.readout {
+  border: 2px solid #111111;
+  background: #FFFFFF;
+  box-shadow: 5px 5px 0 var(--shadow-color);
+}
+
+.dark .readout {
+  border-color: #FFFDF5;
+  background: #111111;
+}
+
+.readout-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 2px solid #111111;
+  padding: 0.5rem 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.dark .readout-head {
+  border-bottom-color: #FFFDF5;
+}
+
+.readout-tag {
+  border: 2px solid #111111;
+  padding: 0.25rem 0.5rem;
+  white-space: nowrap;
+  /* Ink on accent, in both themes — the accent never carries paper text. */
+  color: #111111;
+}
+
+.readout-body {
+  padding: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Level meter: one segment per twelfth of the document. */
+.readout-level {
+  display: flex;
+  gap: 2px;
+  height: 0.75rem;
+}
+
+.readout-level span {
+  flex: 1;
+  border: 2px solid #111111;
+}
+
+.dark .readout-level span {
+  border-color: #FFFDF5;
+}
+
+/* One signal per state. */
+.readout--info .readout-tag {
+  background: #00D9FF;
+}
+
+.readout--fault .readout-tag {
+  background: #FF4B3E;
+}
+
+.readout-level span.on {
+  background: #00D9FF;
+}
+
+/* Reaching the end of a document is the one positive state in the vocabulary. */
+.readout.is-complete .readout-tag,
+.readout.is-complete .readout-level span.on {
+  background: #22F06B;
+}
+
+/* A readout that sits inside an existing panel: no frame of its own, just a rule. */
+.readout--flush {
+  border: 0;
+  border-bottom: 2px solid #111111;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dark .readout--flush {
+  border-bottom-color: #FFFDF5;
+}
+
+.readout--flush .readout-head {
+  border-bottom: 0;
+}
+
+/* Hero topology schematic: flat signal fills, hard rules, one sync pulse.
+   Colour stays on the control plane and the two status rows; the cluster
+   frames themselves are ink-on-paper so the drawing reads as a drawing. */
+.topo-ink {
+  stroke: #111111;
+  fill: #111111;
+}
+
+.dark .topo-ink {
+  stroke: #FFFDF5;
+  fill: #FFFDF5;
+}
+
+.topo-shadow {
+  fill: #111111;
+}
+
+.dark .topo-shadow {
+  fill: rgba(255, 253, 245, 0.25);
+}
+
+.topo-node {
+  fill: #FFFFFF;
+}
+
+.dark .topo-node {
+  fill: #111111;
+}
+
+.topo-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  fill: #111111;
+}
+
+.dark .topo-text {
+  fill: #FFFDF5;
+}
+
+/* Text on a flat accent keeps ink in both themes. */
+.topo-text--ink {
+  fill: #111111;
+}
+
+.dark .topo-text--ink {
+  fill: #111111;
+}
+
+.topo-pulse {
+  fill: #FF1493;
+}
+
+/* The boot sequence: the schematic powers on rather than fading in. Wires draw
+   outward from the control plane, junctions land on the bus, the frames drop
+   into place, then the readouts fill — and only then does the sync loop start.
+   Ordered so the eye's path down the diagram is the order things appear. */
+@keyframes topo-draw {
+  from {
+    stroke-dashoffset: var(--len);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes topo-land {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes topo-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Each wire knows its own length, so the dash offset animates exactly once
+   along it. Setting the dash here also means the wires are invisible before
+   the animation starts, which is the point. */
+.topo-wire line {
+  stroke-dasharray: var(--len);
+  stroke-dashoffset: var(--len);
+  animation: topo-draw 320ms ease-out both;
+}
+
+.topo-wire line:nth-child(1) {
+  --len: 208;
+  animation-delay: 200ms;
+}
+
+.topo-wire line:nth-child(2) {
+  --len: 360;
+  animation-delay: 460ms;
+}
+
+.topo-wire line:nth-child(3) {
+  --len: 100;
+  animation-delay: 660ms;
+}
+
+.topo-wire line:nth-child(4) {
+  --len: 100;
+  animation-delay: 660ms;
+}
+
+.topo-junction rect {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: topo-pop 180ms ease-out both;
+  animation-delay: 700ms;
+}
+
+.topo-boot,
+.topo-node-land {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: topo-land 320ms var(--ease-arrive) both;
+}
+
+/* The sync pulse: hidden through the whole boot, then it loops. `backwards`
+   fill is load-bearing — without it the magenta squares sit visible on the
+   wires while everything else is still powering on. The delay itself lives on
+   each rect in the markup, because a parent group's animation-delay does not
+   reach a child's own animation. */
+.topo-pulse rect {
+  animation: topo-sync 2.4s linear infinite backwards;
+}
+
+/* The pulse itself: fade in at the wire's start, travel it, fade out at the
+   end. --dist is per-pulse, so each one stops where its wire stops. */
+@keyframes topo-sync {
+  from {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(var(--dist, 200px));
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Wires appear fully drawn, everything else lands without travel. */
+  .topo-wire line {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+
+  .topo-junction rect,
+  .topo-boot,
+  .topo-node-land {
+    animation: panel-fade 200ms ease both;
+    animation-delay: 0ms !important;
+  }
+
+  .topo-pulse rect {
+    animation: none;
+  }
 }

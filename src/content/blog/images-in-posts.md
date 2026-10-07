@@ -5,7 +5,7 @@ tags: ['astro', 'images']
 summary: 'Reference images from Markdown and from frontmatter, and keep asset paths consistent.'
 authors: ['default']
 layout: PostLayout
-images: ['/static/images/twitter-card.svg', '/static/images/logo.svg']
+images: ['/static/images/og-default.png', '/static/images/logo.svg']
 ---
 
 Images are part of the story a post tells. This blog keeps its assets under
@@ -28,7 +28,7 @@ layouts:
 
 ```yaml
 images:
-  - /static/images/twitter-card.svg
+  - /static/images/og-default.png
   - /static/images/logo.svg
 ```
 
@@ -37,11 +37,11 @@ Twitter card tags.
 
 ## A word on formats
 
-Prefer SVG for logos and diagrams, and raster formats only for photographs.
-SVGs stay crisp at any size and compress beautifully, which matters when you
-care about page weight.
+Prefer SVG for logos and diagrams, and raster formats for anything a crawler
+has to read: social platforms will not render an SVG, so the Open Graph image
+is a PNG while the logo stays a vector.
 
-![Social card](/static/images/twitter-card.svg)
+![Social card](/static/images/og-default.png)
 
 ## Keeping paths tidy
 

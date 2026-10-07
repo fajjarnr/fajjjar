@@ -1,0 +1,135 @@
+---
+// The hero's console instrument: a multi-cluster control plane drawn as a
+// schematic in the system's own vocabulary — hard rules, flat signal fills,
+// square corners, no curves and no gradients. Illustrative, not a claim about
+// any production cluster; the labels say what the drawing means.
+//
+// The three clusters share one frame: the frame is a container, not a signal,
+// so only the status chip carries state. The red chip is the whole difference.
+const clusters = [
+  { id: 'cluster-a', x: 10, state: 'Nominal', fill: '#22F06B' },
+  { id: 'cluster-b', x: 190, state: 'Nominal', fill: '#22F06B' },
+  { id: 'cluster-c', x: 370, state: 'Fault', fill: '#FF4B3E' },
+];
+---
+
+<div class="readout readout--info">
+  <div class="readout-head">
+    <span class="readout-tag">Topology</span>
+    <span class="ml-auto truncate">Multi-cluster</span>
+  </div>
+
+  <div class="p-3">
+    <svg viewBox="0 0 520 392" class="h-auto w-full" role="img" aria-labelledby="topo-title topo-desc">
+      <title id="topo-title">Multi-cluster control plane schematic</title>
+      <desc id="topo-desc">
+        One control plane syncing policy down to three clusters. Two clusters report nominal state
+        and one reports a fault, while the sync loop keeps running.
+      </desc>
+
+      <!-- Connectors: one drop from the control plane, one bus, three feeds.
+           The top-down order in this group is the boot sequence: the wire the
+           eye follows first is the wire that draws first. -->
+      <g class="topo-ink topo-wire" stroke-width="2" fill="none">
+        <line x1="260" y1="92" x2="260" y2="300" />
+        <line x1="80" y1="200" x2="440" y2="200" />
+        <line x1="80" y1="200" x2="80" y2="300" />
+        <line x1="440" y1="200" x2="440" y2="300" />
+      </g>
+      <g class="topo-ink topo-junction">
+        <rect x="76" y="196" width="8" height="8" />
+        <rect x="256" y="196" width="8" height="8" />
+        <rect x="436" y="196" width="8" height="8" />
+      </g>
+
+      <!-- Sync pulse: the one authored moment. The centre pulse leaves the
+           control plane; the two outer pulses leave the bus, so every pulse
+           travels a wire that actually exists and stops at the cluster frame.
+           The 1.35s boot offset is on each rect: animation-delay on a parent
+           group does not reach a child's own animation. -->
+      <g class="topo-pulse">
+        <rect x="75" y="200" width="10" height="10" style="--dist: 96px; animation-delay: 1.8s" />
+        <rect x="255" y="96" width="10" height="10" style="--dist: 200px; animation-delay: 1.35s" />
+        <rect x="435" y="200" width="10" height="10" style="--dist: 96px; animation-delay: 1.8s" />
+      </g>
+
+      <!-- Cluster frames land after the wires reach them -->
+      {
+        clusters.map((cluster, i) => (
+          <g class="topo-node-land" style={`animation-delay: ${0.72 + i * 0.09}s`}>
+            <rect class="topo-shadow" x={cluster.x + 5} y="305" width="140" height="76" />
+            <rect class="topo-node" x={cluster.x} y="300" width="140" height="76" stroke-width="2" />
+          </g>
+        ))
+      }
+
+      <!-- Control plane: the information hub, so it carries the information
+           signal, and the first thing to power on. -->
+      <g class="topo-boot" style="animation-delay: 0.05s">
+        <rect class="topo-shadow" x="155" y="21" width="220" height="76" />
+        <rect x="150" y="16" width="220" height="76" fill="#00D9FF" stroke="#111111" stroke-width="3" />
+        <text class="topo-text topo-text--ink" x="260" y="50" text-anchor="middle" font-size="14">
+          CONTROL PLANE
+        </text>
+        <text class="topo-text topo-text--ink" x="260" y="70" text-anchor="middle" font-size="10" opacity="0.7">
+          POLICY + SYNC
+        </text>
+      </g>
+
+      <!-- Cluster identity and state chip: the readout fills last, so the
+           schematic reports before it displays. -->
+      {
+        clusters.map((cluster, i) => (
+          <g class="topo-boot" style={`animation-delay: ${1.02 + i * 0.09}s`}>
+            <text class="topo-text" x={cluster.x + 70} y="328" text-anchor="middle" font-size="12">
+              {cluster.id}
+            </text>
+            <rect
+              x={cluster.x + 31}
+              y="340"
+              width="78"
+              height="24"
+              fill={cluster.fill}
+              stroke="#111111"
+              stroke-width="2"
+            />
+            <text class="topo-text topo-text--ink" x={cluster.x + 70} y="356" text-anchor="middle" font-size="10">
+              {cluster.state}
+            </text>
+          </g>
+        ))
+      }
+    </svg>
+  </div>
+</div>
+
+<script is:inline>
+  // A decorative loop that keeps running after it leaves the viewport is pure
+  // cost. Pause the pulse when the schematic is offscreen, and when the tab is
+  // hidden. The boot sequence is finite and is left alone.
+  (function () {
+    var group = document.querySelector('.topo-pulse');
+    var svg = group && group.ownerSVGElement;
+    if (!svg) return;
+
+    var pulses = Array.prototype.slice.call(svg.querySelectorAll('.topo-pulse rect'));
+    var paused = false;
+
+    function setPaused(next) {
+      if (next === paused) return;
+      paused = next;
+      var state = next ? 'paused' : 'running';
+      for (var i = 0; i < pulses.length; i++) pulses[i].style.animationPlayState = state;
+    }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        setPaused(!entries[0].isIntersecting);
+      }, { threshold: 0 }).observe(svg);
+    }
+
+    document.addEventListener('visibilitychange', function () {
+      setPaused(document.hidden);
+    });
+  })();
+</script>

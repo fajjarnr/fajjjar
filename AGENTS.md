@@ -11,6 +11,7 @@ rtk npm install          # install dependencies
 rtk npm run dev          # dev server (localhost:4321)
 rtk npm run build        # production build ke dist/
 rtk npm run preview      # preview build locally
+rtk npm run og           # regenerate the Open Graph image (builds, then captures)
 ```
 
 ## Stack

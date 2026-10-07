@@ -9,6 +9,8 @@ github: https://github.com/fajar
 linkedin: https://linkedin.com/in/fajar
 ---
 
-DevOps / platform engineer: merancang dan mengoperasikan platform yang stabil dan gampang dirawat — spesialisasi Red Hat OpenShift sampai tingkat Architect, dengan bekal AWS, Terraform, Ansible, dan CI/CD.
+DevOps / platform engineer: I design and operate platforms that stay stable and are easy to
+maintain — Red Hat OpenShift specialist up to Architect level, backed by AWS, Terraform,
+Ansible, and CI/CD.
 
-Bangun platform yang tenang saat insiden.
+Keep the platform boring.

@@ -15,9 +15,16 @@ export default defineConfig({
     // rehype plugins run, so rehype-prism-plus would never see them.
     syntaxHighlight: false,
     remarkPlugins: [remarkMath, remarkGithubBlockquoteAlert],
-    rehypePlugins: [rehypeKatex, [rehypePrismPlus, { showLineNumbers: true }]],
+    // ignoreMissing: a fence in an unregistered language (```astro) would
+    // otherwise throw and take the whole post body down with it.
+    rehypePlugins: [rehypeKatex, [rehypePrismPlus, { showLineNumbers: true, ignoreMissing: true }]],
   },
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    // /og-card/ is a render target for scripts/generate-og.mjs, not a page for
+    // visitors, so it stays out of the sitemap.
+    sitemap({ filter: (page) => !page.includes('/og-card') }),
+  ],
   vite: {
     optimizeDeps: {
       exclude: ['@resvg/resvg-js'],

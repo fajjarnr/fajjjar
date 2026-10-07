@@ -1,0 +1,95 @@
+---
+interface Props {
+  /** Reading time of the post body, in minutes — same value the page prints in its meta row. */
+  minutes: number;
+}
+
+const { minutes } = Astro.props;
+
+// One segment per twelfth of the document. The session advances the meter and
+// recomputes the remaining minutes from the measured read position.
+const segments = 12;
+---
+
+<!-- Reading telemetry: the instrument panel for an article page. -->
+<div id="reading-instrument" class="readout readout--info" data-minutes={minutes} aria-label={`Reading progress. ${minutes} min read.`}>
+  <div class="readout-head">
+    <span class="readout-tag">Reading</span>
+    <span id="instrument-pct" class="ml-auto flex-none">0%</span>
+  </div>
+  <div class="readout-body">
+    <div class="readout-level" aria-hidden="true">
+      {Array.from({ length: segments }, () => <span />)}
+    </div>
+    <div class="mt-2 flex items-center justify-between gap-3">
+      <span id="instrument-section" class="truncate">Top of document</span>
+      <span class="flex-none">
+        <span id="instrument-remaining">{minutes}</span> min left
+      </span>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var panel = document.getElementById('reading-instrument');
+    if (!panel) return;
+
+    var pct = document.getElementById('instrument-pct');
+    var level = panel.querySelector('.readout-level');
+    var segments = level ? Array.prototype.slice.call(level.children) : [];
+    var sectionEl = document.getElementById('instrument-section');
+    var remainingEl = document.getElementById('instrument-remaining');
+    var minutes = parseInt(panel.getAttribute('data-minutes') || '1', 10) || 1;
+    var article = document.querySelector('article.post-prose');
+    var headings = article
+      ? Array.prototype.slice.call(article.querySelectorAll('h2[id], h3[id]'))
+      : [];
+
+    function clamp(value, low, high) {
+      return Math.min(high, Math.max(low, value));
+    }
+
+    // The last heading that has already crossed the reading line (40% down the viewport).
+    function sectionAt(line) {
+      var current = null;
+      for (var i = 0; i < headings.length; i++) {
+        if (headings[i].getBoundingClientRect().top <= line) current = headings[i];
+        else break;
+      }
+      return current;
+    }
+
+    function readLabel(section) {
+      if (!section) return 'Top of document';
+      var text = (section.textContent || '').trim();
+      return (section.tagName === 'H3' ? '\u2014 ' : '') + text;
+    }
+
+    function update() {
+      var doc = document.documentElement;
+      var scrollable = doc.scrollHeight - window.innerHeight;
+      var ratio = scrollable > 0 ? clamp(window.scrollY / scrollable, 0, 1) : 1;
+      var done = ratio >= 0.995;
+      var percent = done ? 100 : Math.floor(ratio * 100);
+
+      if (pct) pct.textContent = percent + '%';
+      if (remainingEl) remainingEl.textContent = done ? '0' : String(Math.max(0, Math.ceil(minutes * (1 - ratio))));
+
+      var onCount = done ? segments.length : Math.round(ratio * segments.length);
+      for (var i = 0; i < segments.length; i++) {
+        segments[i].classList.toggle('on', i < onCount);
+      }
+
+      panel.classList.toggle('is-complete', done);
+
+      var current = done ? 'End of document' : readLabel(sectionAt(window.innerHeight * 0.4));
+      if (sectionEl) sectionEl.textContent = current;
+      panel.setAttribute('aria-label', current + '. ' + percent + '% read.');
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>

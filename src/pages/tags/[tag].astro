@@ -53,9 +53,9 @@ posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
       </p>
     </div>
 
-    <ul class="mt-10 space-y-6">
+    <ul class="stagger mt-10 space-y-6">
       {posts.map((post) => (
-        <li class="border-2 border-ink bg-white p-6 shadow-brutal-md transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink reveal">
+        <li class="border-2 border-ink bg-white p-6 shadow-brutal-md transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink">
           <div class="flex flex-wrap items-center gap-3 text-xs font-black uppercase">
             <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
             <span class="border-2 border-ink bg-yellow px-2 py-1 text-ink dark:border-paper">

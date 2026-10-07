@@ -1,0 +1,54 @@
+---
+// Card-only render target for the Open Graph image generator.
+// Not linked from anywhere and excluded from the sitemap via `noindex`; it
+// exists so `scripts/generate-og.mjs` can screenshot the real hero component
+// at the real 1200x630 instead of a hand-maintained copy of it.
+import Hero from '../components/Hero.astro';
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Open Graph card</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-paper text-ink font-body antialiased">
+    <!-- Centred in the 1200x630 frame: the hero's own vertical padding is tuned
+         for a page, not a card, so the card sets its own rhythm. -->
+    <div id="og-card" class="flex h-[630px] w-[1200px] items-center overflow-hidden bg-paper">
+      <Hero asCard />
+    </div>
+    <style is:global>
+      /* The capture is a still: no entrance animation, no sync loop, so the
+         screenshot is deterministic rather than depending on when it is taken. */
+      .reveal,
+      .topo-wire line,
+      .topo-junction rect,
+      .topo-boot,
+      .topo-node-land {
+        animation: none !important;
+      }
+      .topo-wire line {
+        stroke-dashoffset: 0 !important;
+      }
+      .topo-pulse {
+        display: none !important;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+    </style>
+  </body>
+</html>

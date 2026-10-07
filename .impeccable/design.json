@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-07T00:00:00Z",
+  "title": "Design System: fajjjar.my.id",
+  "extensions": {
+    "colorMeta": {
+      "console-black": {
+        "role": "neutral",
+        "displayName": "Console Black",
+        "canonical": "oklch(17.8% 0.000 89.9)",
+        "tonalRamp": ["#0B0B0B", "#252525", "#424242", "#616161", "#828282", "#A5A5A5", "#C9C9C9", "#EEEEEE"]
+      },
+      "chart-paper": {
+        "role": "neutral",
+        "displayName": "Chart Paper",
+        "canonical": "oklch(99.3% 0.011 95.2)",
+        "tonalRamp": ["#0C0B06", "#27251F", "#44423C", "#63615A", "#84827B", "#A7A59E", "#CBC9C1", "#F0EFE7"]
+      },
+      "graph-shade": {
+        "role": "neutral",
+        "displayName": "Graph Shade",
+        "canonical": "oklch(95.5% 0.014 93.0)",
+        "tonalRamp": ["#0D0B05", "#27251E", "#44423A", "#646159", "#858279", "#A8A59C", "#CCC9BF", "#F1EEE4"]
+      },
+      "panel-white": {
+        "role": "neutral",
+        "displayName": "Panel White",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": ["#0B0B0B", "#252525", "#424242", "#616161", "#828282", "#A5A5A5", "#C9C9C9", "#EEEEEE"]
+      },
+      "caution-yellow": {
+        "role": "primary",
+        "displayName": "Caution Yellow",
+        "canonical": "oklch(91.5% 0.191 101.0)",
+        "tonalRamp": ["#1D0300", "#3B1E00", "#5A3E00", "#7A5F00", "#9D8200", "#C0A600", "#E5CB00", "#FFF12A"]
+      },
+      "alert-magenta": {
+        "role": "primary",
+        "displayName": "Alert Magenta",
+        "canonical": "oklch(65.5% 0.261 356.9)",
+        "tonalRamp": ["#44000C", "#6E0027", "#980044", "#C30063", "#ED0085", "#FF3CA7", "#FF6BCC", "#FF94F1"]
+      },
+      "telemetry-cyan": {
+        "role": "secondary",
+        "displayName": "Telemetry Cyan",
+        "canonical": "oklch(81.6% 0.145 216.5)",
+        "tonalRamp": ["#000F31", "#002F51", "#005073", "#007296", "#0095BA", "#00BADF", "#1EE0FF", "#5EFFFF"]
+      },
+      "nominal-green": {
+        "role": "secondary",
+        "displayName": "Nominal Green",
+        "canonical": "oklch(83.6% 0.232 148.5)",
+        "tonalRamp": ["#001A00", "#003A00", "#005C00", "#008000", "#00A415", "#00C944", "#22F06B", "#60FF91"]
+      },
+      "fault-red": {
+        "role": "tertiary",
+        "displayName": "Fault Red",
+        "canonical": "oklch(66.9% 0.218 28.5)",
+        "tonalRamp": ["#430000", "#6C0000", "#950000", "#BE0000", "#E83229", "#FF5E4F", "#FF8673", "#FFAD97"]
+      },
+      "fault-red-light": {
+        "role": "tertiary",
+        "displayName": "Fault Red Light",
+        "canonical": "oklch(77.7% 0.132 32.1)",
+        "tonalRamp": ["#300000", "#540000", "#791A09", "#9E3E2D", "#C4614E", "#EC846F", "#FFA892", "#FFCDB6"]
+      },
+      "auxiliary-violet": {
+        "role": "tertiary",
+        "displayName": "Auxiliary Violet",
+        "canonical": "oklch(66.1% 0.210 298.7)",
+        "tonalRamp": ["#210055", "#390079", "#56009F", "#7534C5", "#965AEC", "#B980FF", "#DDA5FF", "#FFCBFF"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines and the 404 numeral only. Uppercase, 900, tight leading." },
+      "headline": { "displayName": "Headline", "purpose": "Page titles and section headers." },
+      "title": { "displayName": "Title", "purpose": "Card and post-list headings." },
+      "body": { "displayName": "Body", "purpose": "Default reading copy; article body at 17px/1.65 with a 720px measure." },
+      "body-large": { "displayName": "Body Large", "purpose": "Hero subtitles, page descriptions, intro paragraphs." },
+      "label": { "displayName": "Label", "purpose": "Machine-produced text: dates, counts, reading time, badges, chips." },
+      "code": { "displayName": "Code / Small", "purpose": "Inline code, pre blocks, table headers, and small metadata runs in prose." },
+      "post-h3": { "displayName": "Post H3", "purpose": "Third-level headings inside article prose, below the 1.875rem H2 rule." },
+      "numeral": { "displayName": "Numeral", "purpose": "The 404 numeral and other single-glyph display moments." }
+    },
+    "shadows": [
+      { "name": "brutal-xs", "value": "1px 1px 0 var(--shadow-color)", "purpose": "Resting state after a press, and the hover target for small controls." },
+      { "name": "brutal-sm", "value": "3px 3px 0 var(--shadow-color)", "purpose": "Small controls at rest: tags, social icons, share buttons, related-post cards." },
+      { "name": "brutal-md", "value": "5px 5px 0 var(--shadow-color)", "purpose": "Default for cards, panels, sidebar blocks, inputs, and icon buttons." },
+      { "name": "brutal-lg", "value": "7px 7px 0 var(--shadow-color)", "purpose": "Emphasis tier: featured cards, project cards, newsletter, article banners, readout panels." }
+    ],
+    "motion": [
+      { "name": "press", "value": "transform .15s ease, box-shadow .15s ease", "purpose": "The universal hover/press transition: translate toward the shadow while it shrinks one tier." },
+      { "name": "reveal", "value": "fadeUp .6s ease-out", "purpose": "Section entrance: 20px rise with fade, used on home bands and list items." },
+      { "name": "instrument-readout", "value": "width .1s linear on the level meter", "purpose": "The reading instrument's only motion: the meter tracks the scroll position directly, no easing, no flourish." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main action on a surface: Alert Magenta, square, presses into its shadow on hover.",
+      "html": "<button class=\"ds-btn-primary\">READ THE BLOG</button>",
+      "css": ".ds-btn-primary { display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.025em; color: #111111; background: #FF1493; border: 2px solid #111111; border-radius: 0; padding: 12px 24px; box-shadow: 5px 5px 0 #111111; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; } .ds-btn-primary:hover { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #111111; } .ds-btn-primary:active { transform: translate(5px, 5px); box-shadow: 1px 1px 0 #111111; } .ds-btn-primary:focus-visible { outline: 3px solid #00D9FF; outline-offset: 3px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "The paired alternative action: Panel White, same square shape and press behaviour.",
+      "html": "<button class=\"ds-btn-secondary\">ABOUT ME</button>",
+      "css": ".ds-btn-secondary { display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.025em; color: #111111; background: #FFFFFF; border: 2px solid #111111; border-radius: 0; padding: 12px 24px; box-shadow: 5px 5px 0 #111111; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; } .ds-btn-secondary:hover { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #111111; } .ds-btn-secondary:active { transform: translate(5px, 5px); box-shadow: 1px 1px 0 #111111; } .ds-btn-secondary:focus-visible { outline: 3px solid #00D9FF; outline-offset: 3px; }"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "button-icon",
+      "description": "44px square utility control for search, theme toggle, and menu. Caution Yellow; green variant for scroll-to-top. Search and theme always sit in one right-aligned cluster.",
+      "html": "<button class=\"ds-btn-icon\" aria-label=\"Search\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" width=\"20\" height=\"20\"><path d=\"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z\"/></svg></button>",
+      "css": ".ds-btn-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: #111111; background: #FFE500; border: 2px solid #111111; border-radius: 0; padding: 8px; box-shadow: 5px 5px 0 #111111; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; } .ds-btn-icon:hover { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #111111; } .ds-btn-icon:active { transform: translate(5px, 5px); box-shadow: 1px 1px 0 #111111; } .ds-btn-icon:focus-visible { outline: 3px solid #00D9FF; outline-offset: 3px; } .ds-btn-icon--green { background: #22F06B; }"
+    },
+    {
+      "name": "Tag Chip",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Telemetry Cyan monospace tag linking to a tag index. Colour never carries meaning alone — the label does.",
+      "html": "<a class=\"ds-tag\" href=\"#\">#kubernetes</a>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; font-weight: 700; text-transform: uppercase; color: #111111; background: #00D9FF; border: 2px solid #111111; border-radius: 0; padding: 8px 12px; box-shadow: 3px 3px 0 #111111; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; } .ds-tag:hover { transform: translate(3px, 3px); box-shadow: none; } .ds-tag:focus-visible { outline: 3px solid #00D9FF; outline-offset: 3px; }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Small monospace label for state: Caution Yellow for post tags and featured flags, Alert Magenta for the featured marker.",
+      "html": "<span class=\"ds-badge\">FEATURED</span>",
+      "css": ".ds-badge { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #111111; background: #FFE500; border: 2px solid #111111; border-radius: 0; padding: 4px 8px; } .ds-badge--magenta { background: #FF1493; } .ds-badge--green { background: #22F06B; }"
+    },
+    {
+      "name": "Content Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Panel White container with a 2px rule and Brutal MD shadow; the default surface for posts and projects.",
+      "html": "<article class=\"ds-card\"><h3 class=\"ds-card-title\">Introducing This Blog</h3><p class=\"ds-card-body\">Why I rebuilt my blog with Astro, Tailwind CSS, and a deliberately loud neo-brutalist design.</p></article>",
+      "css": ".ds-card { background: #FFFFFF; border: 2px solid #111111; border-radius: 0; padding: 24px; box-shadow: 5px 5px 0 #111111; transition: transform .15s ease, box-shadow .15s ease; } .ds-card:hover { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #111111; } .ds-card-title { margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.025em; line-height: 1.25; color: #111111; } .ds-card-body { margin: 12px 0 0; font-family: 'Inter', sans-serif; font-size: 0.875rem; line-height: 1.7; color: #111111; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Bordered square field with a Brutal MD shadow; focus is the global cyan ring, never a border or background change.",
+      "html": "<input class=\"ds-input\" type=\"email\" placeholder=\"Enter your email\" />",
+      "css": ".ds-input { width: 100%; font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 700; color: #111111; background: #FFFFFF; border: 2px solid #111111; border-radius: 0; padding: 12px 16px; box-shadow: 5px 5px 0 #111111; transition: transform .15s ease, box-shadow .15s ease; } .ds-input::placeholder { font-weight: 400; color: #111111; opacity: .5; } .ds-input:hover { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #111111; } .ds-input:focus-visible { outline: 3px solid #00D9FF; outline-offset: 3px; }"
+    },
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Space Grotesk bold link with a transparent 2px underline that fills on hover; the header's default navigation.",
+      "html": "<a class=\"ds-nav-link\" href=\"#\">Blog</a>",
+      "css": ".ds-nav-link { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; color: #111111; text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 2px; text-underline-offset: 4px; padding: 8px 0; transition: text-decoration-color .15s ease; } .ds-nav-link:hover { text-decoration-color: #111111; } .ds-nav-link:focus-visible { outline: 3px solid #00D9FF; outline-offset: 3px; }"
+    },
+    {
+      "name": "Console Readout",
+      "kind": "custom",
+      "refersTo": "readout",
+      "description": "The instrument vocabulary for states: reading telemetry, an empty result set, a missing route, an unavailable index. The signal word in the tag carries the meaning; the accent only reinforces it.",
+      "html": "<div class=\"ds-readout ds-readout--info\"><div class=\"ds-readout-head\"><span class=\"ds-readout-tag\">Reading</span><span class=\"ds-readout-pct\">42%</span></div><div class=\"ds-readout-body\"><div class=\"ds-readout-level\"><span class=\"on\"></span><span class=\"on\"></span><span class=\"on\"></span><span class=\"on\"></span><span class=\"on\"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div class=\"ds-readout-foot\"><span>Multi-cluster failover</span><span>6 min left</span></div></div></div>",
+      "css": ".ds-readout { background: #FFFFFF; border: 2px solid #111111; border-radius: 0; box-shadow: 5px 5px 0 #111111; } .ds-readout-head { display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #111111; padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; } .ds-readout-tag { border: 2px solid #111111; padding: 4px 8px; white-space: nowrap; color: #111111; background: #00D9FF; } .ds-readout-pct { margin-left: auto; flex: none; } .ds-readout-body { padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; } .ds-readout-level { display: flex; gap: 2px; height: 12px; } .ds-readout-level span { flex: 1; border: 2px solid #111111; } .ds-readout-level span.on { background: #00D9FF; } .ds-readout-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; } .ds-readout--fault .ds-readout-tag { background: #FF4B3E; } .ds-readout--fault .ds-readout-level span.on { background: #FF4B3E; } .ds-readout.is-complete .ds-readout-tag, .ds-readout.is-complete .ds-readout-level span.on { background: #22F06B; }"
+    },
+    {
+      "name": "Fault Readout",
+      "kind": "custom",
+      "refersTo": "readout",
+      "description": "The recovery state: a missing route reports what was requested, what came back, and what is still available. The reader's own path keeps its real case.",
+      "html": "<div class=\"ds-readout ds-readout--fault ds-fault\"><div class=\"ds-readout-head\"><span class=\"ds-readout-tag\">Fault</span><span class=\"ds-fault-sub\">Route not found</span></div><div class=\"ds-readout-body ds-fault-grid\"><div class=\"ds-fault-row\"><span class=\"ds-fault-key\">Requested</span><span class=\"ds-fault-value\">/blog/nope/</span></div><div class=\"ds-fault-row\"><span class=\"ds-fault-key\">Response</span><span class=\"ds-fault-value\">404 — not found</span></div><div class=\"ds-fault-row\"><span class=\"ds-fault-key\">Index</span><span class=\"ds-fault-value\">7 documents available</span></div></div></div>",
+      "css": ".ds-readout { background: #FFFFFF; border: 2px solid #111111; border-radius: 0; box-shadow: 5px 5px 0 #111111; } .ds-readout-head { display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #111111; padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; } .ds-readout-tag { border: 2px solid #111111; padding: 4px 8px; white-space: nowrap; color: #111111; background: #FF4B3E; } .ds-fault-sub { margin-left: auto; } .ds-readout-body { padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; } .ds-fault-grid { display: grid; gap: 4px; } .ds-fault-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 16px; } .ds-fault-key { color: #111111; opacity: .7; } .ds-fault-value { text-transform: none; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Control Room",
+    "overview": "A calm operations console drawn on graph paper. The palette is loud on purpose — cyan, magenta, yellow, green read as instrument states, not decoration — but the system that carries them is disciplined: one container width, one border weight family, one shadow vocabulary, one accent per signal. Nothing on the page is ambient. Every surface is bounded by a black rule, every element sits on the grid, and every colored block is labelled in monospace. It should feel like a readout you trust at 3am, not a page that is trying to impress you.\n\nDensity is high and typographic, closer to a printed specification than a marketing page. Display type is set heavy and uppercase in Space Grotesk; metadata, counts, badges and labels are set in JetBrains Mono so they read as machine output rather than prose. Body copy is Inter at a comfortable measure. The system never softens: no blur, no gradient fill, no rounded corner, no drop shadow without an offset. Where the print aesthetic would normally be a costume, here it is load-bearing — a hard black rule around a card is also what tells you the card is a card.\n\nThe register is calm operations: bright signals, ordered layout, no ornament that does not carry information. The one confirmed rejection is muted low-contrast palettes — this system earns its calm from legibility and order, not from desaturation.",
+    "keyCharacteristics": [
+      "Hard black rules (2–4px) bound every surface; nothing floats unboxed.",
+      "Solid offset shadows with zero blur; depth is displacement, not light.",
+      "Zero border-radius anywhere; corners are always square.",
+      "Colour is signal: each accent carries one recurring meaning and always ships a text label.",
+      "Monospace for anything that reads as data; display grotesk for anything that reads as a heading.",
+      "Graph-paper ground at 24px, visible in both themes."
+    ],
+    "rules": [
+      { "name": "The One Signal Rule", "body": "Each accent colour carries exactly one recurring meaning and is never used as general decoration. Magenta means act, cyan means information, green means nominal, red means fault, yellow means state/utility. A new accent role needs a new decision, not a reassignment.", "section": "colors" },
+      { "name": "The Never Colour Alone Rule", "body": "Colour never communicates category or state by itself. Every coloured chip, badge, and tag ships a text label; the label carries the meaning and the colour only reinforces it.", "section": "colors" },
+      { "name": "The Contrast Floor Rule", "body": "No text is set in an accent-on-accent or accent-on-paper combination. Ink on any accent is the default; the lowest ratio in the shipped set is magenta at 5.19:1, still above the 4.5:1 normal-text floor.", "section": "colors" },
+      { "name": "The Mono-For-Data Rule", "body": "Anything a machine would produce — timestamps, counts, reading time, identifiers, tags, status badges — is set in JetBrains Mono, uppercase, bold, at 0.75rem. Anything a human wrote is set in Inter or Space Grotesk. Never mix the two roles inside one element.", "section": "typography" },
+      { "name": "The Uppercase Structure Rule", "body": "All headings at Headline level and above are uppercase. Uppercase is what separates a heading from a sentence in this system; do not set a headline in sentence case.", "section": "typography" },
+      { "name": "The Press Rule", "body": "Hover always moves an element toward its shadow and shrinks the shadow; it never grows it, never blurs it, and never lifts the element off the page. The transition is translate(3px, 3px) with the shadow dropping one tier.", "section": "elevation" },
+      { "name": "The Zero-Blur Rule", "body": "Every shadow in the system has a 0px blur radius and a 0px spread. Blur is banned; if depth needs to read stronger, increase the offset or the tier, not the softness.", "section": "elevation" },
+      { "name": "The Signal Word Rule", "body": "A readout's tag states the state in words — Reading, Index, Query, No signal, Fault — and never appears as colour alone. The accent reinforces the word; it does not replace it.", "section": "components" },
+      { "name": "The Data Case Rule", "body": "Readout chrome is uppercase mono, but a value the reader supplied or a real path keeps its own case: a requested path renders /blog/nope/, not /BLOG/NOPE/. Uppercase is for labels, never for data.", "section": "components" },
+      { "name": "The Instrument, Not Container Rule", "body": "A readout marks a moment the visitor must read or act on. Do not wrap ordinary page content in one, and do not stack readouts; a page has one instrument or none.", "section": "components" }
+    ],
+    "dos": [
+      "Do bound every surface with a 2–4px Console Black rule. An unboxed surface is not part of this system.",
+      "Do use solid offset shadows from the Brutal XS/SM/MD/LG ladder with 0px blur, and move the element toward the shadow on hover.",
+      "Do keep every corner at 0 radius — buttons, cards, inputs, avatars, images, badges alike.",
+      "Do set machine-produced text (dates, counts, reading time, tags, badges) in uppercase JetBrains Mono at 0.75rem/700.",
+      "Do pair every accent colour with a text label; colour reinforces meaning, it never carries it alone.",
+      "Do set ink on accent, never accent on accent, and keep the pairing at or above 4.5:1.",
+      "Do use the 1180px shell and SectionContainer for page structure, and the 720px measure for article body.",
+      "Do report states through a console readout — a named signal tag plus the machine values — and keep the reader's own data in its original case."
+    ],
+    "donts": [
+      "Don't introduce muted or low-contrast palettes — the confirmed rejection for this system. Calm comes from order and legibility, not desaturation.",
+      "Don't add blur to any shadow, or use a diffuse drop shadow in place of an offset one.",
+      "Don't round a corner, even by 2px, on any component.",
+      "Don't use gradients as fills. (The only gradient in the codebase is the unused .card::before hover border sweep, which is dead CSS and not part of the system.)",
+      "Don't lift an element on hover; hover presses toward the shadow, it never floats.",
+      "Don't use Alert Magenta as general decoration — it is the action colour and stays rationed.",
+      "Don't set body copy in Space Grotesk or headings in JetBrains Mono; the three families have fixed roles."
+    ]
+  }
+}

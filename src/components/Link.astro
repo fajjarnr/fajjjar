@@ -10,7 +10,7 @@ const isExternal = href.startsWith('http');
 
 <a
   href={href}
-  class={`font-bold text-ink underline decoration-2 underline-offset-4 transition-all hover:decoration-4 dark:text-paper ${className}`}
+  class={`font-bold text-ink underline decoration-2 underline-offset-4 transition-all hover:decoration-4 ${className}`}
   {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
 >
   <slot />

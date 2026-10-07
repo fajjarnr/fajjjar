@@ -1,0 +1,69 @@
+---
+import { siteMetadata } from '../data/siteMetadata';
+import TopologyDiagram from './TopologyDiagram.astro';
+
+interface Props {
+  /**
+   * The social card renders at a fixed 1200×630, so it needs its own vertical
+   * rhythm and a `h1` instead of the page's `h1` — a page may only have one.
+   */
+  asCard?: boolean;
+}
+const { asCard = false } = Astro.props;
+---
+
+<!--
+  The hero's composition, and the single source of truth for it: the home page
+  renders it as the page hero, and `scripts/generate-og.mjs` renders it in card
+  mode to produce the Open Graph image. One component, so the social card
+  cannot drift away from the hero it is supposed to depict.
+-->
+<div
+  class:list={[
+    'mx-auto grid max-w-[1180px] items-center gap-12 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] lg:gap-16',
+    asCard ? 'py-7' : 'py-16 sm:py-24',
+  ]}
+>
+  <div class="reveal">
+    <span class="inline-block border-2 border-ink bg-cyan px-3 py-1 font-mono text-xs font-bold uppercase tracking-tight text-ink dark:border-paper dark:bg-cyan dark:text-ink">
+      DevOps / Platform Engineer
+    </span>
+    {
+      asCard ? (
+        <div class="mt-6 font-display font-black uppercase leading-[0.9] tracking-tight text-ink dark:text-paper text-5xl sm:text-6xl md:text-7xl">
+          Keep the<br />
+          <span class="bg-yellow px-2 inline-block text-ink">platform</span><br />
+          boring
+        </div>
+      ) : (
+        <h1 class="mt-6 font-display font-black uppercase leading-[0.9] tracking-tight text-ink dark:text-paper text-5xl sm:text-6xl md:text-7xl">
+          Keep the<br />
+          <span class="bg-yellow px-2 inline-block text-ink">platform</span><br />
+          boring
+        </h1>
+      )
+    }
+    <p class="mt-8 max-w-xl text-lg font-bold leading-relaxed text-ink/70 dark:text-paper/70 sm:text-xl">
+      {siteMetadata.description}
+    </p>
+    <div class="mt-10 flex flex-wrap gap-4">
+      <a
+        href="/blog"
+        class="border-2 border-ink bg-pink px-6 py-3 font-black uppercase text-ink shadow-brutal-md transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper dark:bg-pink dark:text-ink"
+      >
+        Read the blog
+      </a>
+      <a
+        href="/about"
+        class="border-2 border-ink bg-white px-6 py-3 font-black uppercase shadow-brutal-md transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink dark:text-paper"
+      >
+        About me
+      </a>
+    </div>
+  </div>
+
+  <!-- The positioning line, drawn: one control plane keeping three clusters in sync -->
+  <div class="reveal">
+    <TopologyDiagram />
+  </div>
+</div>

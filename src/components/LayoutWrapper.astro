@@ -4,7 +4,7 @@ import { siteMetadata } from '../data/siteMetadata';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import Analytics from './Analytics.astro';
-import ScrollTopAndComment from './ScrollTopAndComment.astro';
+import ScrollTop from './ScrollTop.astro';
 
 interface Props {
   title?: string;
@@ -74,6 +74,8 @@ const fullImage = new URL(image, siteUrl).href;
     <!-- KaTeX CSS (required for remark-math + rehype-katex output) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" />
 
+    <link rel="alternate" type="application/rss+xml" title={siteMetadata.title} href="/rss.xml" />
+
     <Analytics />
 
     <!-- Theme init -->
@@ -87,11 +89,17 @@ const fullImage = new URL(image, siteUrl).href;
 </script>
   </head>
   <body class="flex min-h-screen flex-col bg-paper text-ink font-body antialiased dark:bg-ink dark:text-paper">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[70] focus:border-2 focus:border-ink focus:bg-yellow focus:px-4 focus:py-2 focus:font-black focus:uppercase focus:text-ink"
+    >
+      Skip to content
+    </a>
     <Header />
-    <main class="flex-1">
+    <main id="main" aria-label="Page content" class="flex-1">
       <slot />
     </main>
     <Footer />
-    <ScrollTopAndComment />
-  </body>
+    <ScrollTop />
+</body>
 </html>

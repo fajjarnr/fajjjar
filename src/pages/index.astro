@@ -5,56 +5,33 @@ import SectionContainer from '../components/SectionContainer.astro';
 import Tag from '../components/Tag.astro';
 import Link from '../components/Link.astro';
 import { siteMetadata } from '../data/siteMetadata';
-import { formatDate, slugTag } from '../utils/blog';
+import { formatDate, readingTime, slugTag } from '../utils/blog';
+import TopologyDiagram from '../components/TopologyDiagram.astro';
+import Hero from '../components/Hero.astro';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 5);
 
-const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+const allTags = [...new Set<string>(posts.flatMap((p) => p.data.tags))].sort();
 const featured = posts[0];
 const recent = posts.slice(1);
 ---
 
 <LayoutWrapper title={siteMetadata.title} description={siteMetadata.description} url="/">
-  <section class="border-b-4 border-ink dark:border-paper reveal">
+  <!-- Status bar: the positioning line, stated once, above the fold -->
   <div class="border-b-2 border-ink bg-yellow dark:border-paper">
-    <div class="mx-auto max-w-[1180px] px-4 py-2 sm:px-6">
-      <p class="font-mono text-xs font-bold uppercase tracking-tight text-ink">
-        ✦ {featured?.data.title ?? 'DevOps / Platform Engineering'}
-      </p>
+    <div class="mx-auto flex max-w-[1180px] flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2 sm:px-6">
+      <span class="font-mono text-xs font-bold uppercase tracking-tight text-ink">Focus</span>
+      <span class="font-mono text-xs font-bold uppercase tracking-tight text-ink/70">
+        OpenShift · Multi-cluster · Automation
+      </span>
     </div>
   </div>
 
   <!-- Hero -->
   <section class="border-b-4 border-ink dark:border-paper">
-    <div class="mx-auto max-w-[1180px] px-4 py-16 sm:px-6 sm:py-24">
-      <span class="inline-block border-2 border-ink bg-cyan px-3 py-1 font-mono text-xs font-bold uppercase tracking-tight dark:border-paper">
-        DevOps / Platform Engineer
-      </span>
-      <h1 class="mt-6 font-display font-black uppercase leading-[0.9] tracking-tight text-ink dark:text-paper text-5xl sm:text-6xl md:text-7xl">
-        Bangun<br />
-        <span class="bg-yellow px-2 inline-block">platform</span><br />
-        yang tenang
-      </h1>
-      <p class="mt-8 max-w-xl text-lg font-bold leading-relaxed text-ink/70 dark:text-paper/70 sm:text-xl">
-        {siteMetadata.description}
-      </p>
-      <div class="mt-10 flex flex-wrap gap-4">
-        <a
-          href="/blog"
-          class="border-2 border-ink bg-pink px-6 py-3 font-black uppercase shadow-brutal-md transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper"
-        >
-          Read the blog
-        </a>
-        <a
-          href="/about"
-          class="border-2 border-ink bg-white px-6 py-3 font-black uppercase shadow-brutal-md transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink dark:text-paper"
-        >
-          About me
-        </a>
-      </div>
-    </div>
+    <Hero />
   </section>
 
   <!-- Topic filter strip -->
@@ -63,7 +40,7 @@ const recent = posts.slice(1);
       <div class="mx-auto max-w-[1180px] px-4 py-4 sm:px-6">
         <div class="flex flex-wrap items-center gap-2">
           <span class="font-mono text-xs font-bold uppercase text-ink/70 dark:text-paper/70">Topics:</span>
-          {allTags.map((tag) => (
+          {allTags.slice(0, 4).map((tag) => (
             <a
               href={`/tags/${slugTag(tag)}/`}
               class="inline-block border-2 border-ink bg-white px-3 py-1 font-mono text-xs font-bold uppercase text-ink transition-all hover:bg-yellow dark:border-paper dark:bg-ink dark:text-paper"
@@ -71,6 +48,14 @@ const recent = posts.slice(1);
               {tag}
             </a>
           ))}
+          {allTags.length > 4 && (
+            <a
+              href="/tags"
+              class="inline-block border-2 border-ink bg-cyan px-3 py-1 font-mono text-xs font-bold uppercase text-ink transition-all hover:bg-yellow dark:border-paper dark:bg-cyan dark:text-ink"
+            >
+              +{allTags.length - 4} more
+            </a>
+          )}
         </div>
       </div>
     </div>
@@ -81,7 +66,7 @@ const recent = posts.slice(1);
     <SectionContainer>
       <div class="border-2 border-ink bg-yellow p-6 shadow-brutal-lg dark:border-paper sm:p-8 reveal">
         <div class="flex flex-wrap items-center gap-3">
-          <span class="border-2 border-ink bg-pink px-2 py-1 font-mono text-xs font-bold uppercase dark:border-paper">
+          <span class="border-2 border-ink bg-pink px-2 py-1 font-mono text-xs font-bold uppercase text-ink dark:border-paper dark:bg-pink dark:text-ink">
             Featured
           </span>
           <time datetime={featured.data.date.toISOString()} class="font-mono text-xs font-bold uppercase text-ink/70">
@@ -109,7 +94,7 @@ const recent = posts.slice(1);
       <h2 class="font-display font-black uppercase tracking-tight text-3xl text-ink dark:text-paper sm:text-4xl">
         Latest writing
       </h2>
-      <span class="border-2 border-ink bg-green px-3 py-1 font-mono text-xs font-black dark:border-paper">
+      <span class="border-2 border-ink bg-green px-3 py-1 font-mono text-xs font-black text-ink dark:border-paper dark:bg-green dark:text-ink">
         {recent.length} posts
       </span>
     </div>
@@ -120,7 +105,7 @@ const recent = posts.slice(1);
       </p>
     )}
 
-    <ul class="mt-10 grid gap-6 sm:grid-cols-2 reveal">
+    <ul class="stagger mt-10 grid gap-6 sm:grid-cols-2">
       {recent.map((post, i) => (
         <li
           class={`border-2 border-ink bg-white p-6 shadow-brutal-md transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink ${i === 0 ? 'sm:col-span-2' : ''}`}
@@ -129,8 +114,8 @@ const recent = posts.slice(1);
             <time datetime={post.data.date.toISOString()} class="border-2 border-ink px-2 py-1 font-mono text-xs font-black uppercase dark:border-paper">
               {formatDate(post.data.date)}
             </time>
-            <span class="border-2 border-ink bg-cyan px-2 py-1 font-mono text-xs font-black uppercase dark:border-paper">
-              {post.data.layout}
+            <span class="border-2 border-ink bg-cyan px-2 py-1 font-mono text-xs font-black uppercase text-ink dark:border-paper dark:bg-cyan dark:text-ink">
+              {readingTime(post.body)} min read
             </span>
           </div>
           <h3 class="mt-4 font-display font-black uppercase tracking-tight text-xl text-ink dark:text-paper sm:text-2xl">
@@ -153,22 +138,10 @@ const recent = posts.slice(1);
     <div class="mt-12 flex justify-center">
       <a
         href="/blog"
-        class="border-2 border-ink bg-pink px-8 py-4 font-black uppercase shadow-brutal-lg transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper"
+        class="border-2 border-ink bg-pink px-8 py-4 font-black uppercase text-ink shadow-brutal-lg transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-brutal-xs dark:border-paper dark:bg-pink dark:text-ink"
       >
         View all posts
       </a>
-    </div>
-  </SectionContainer>
-
-  <!-- Editorial callout -->
-  <SectionContainer>
-    <div class="border-2 border-ink bg-cyan p-6 shadow-brutal-md dark:border-paper sm:p-8 reveal">
-      <span class="inline-block border-2 border-ink bg-yellow px-2 py-1 font-mono text-xs font-bold uppercase dark:border-paper">
-        Focus
-      </span>
-      <p class="mt-4 font-display text-xl font-black uppercase tracking-tight text-ink sm:text-2xl">
-        OpenShift · Multi-cluster · Automation
-      </p>
     </div>
   </SectionContainer>
 </LayoutWrapper>

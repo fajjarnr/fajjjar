@@ -31,9 +31,12 @@ const accentCycle = ['bg-cyan', 'bg-pink', 'bg-green', 'bg-red', 'bg-yellow'];
         autocomplete="off"
         class="w-full border-2 border-ink bg-white px-4 py-3 font-bold shadow-brutal-md placeholder:font-normal placeholder:text-ink/50 focus:outline-none focus:ring-0 dark:border-paper dark:bg-ink dark:text-paper dark:placeholder:text-paper/50"
       />
-      <p id="filter-count" class="mt-3 text-sm font-bold text-ink/70 dark:text-paper/70">
-        Showing all {posts.length} posts
-      </p>
+      <div id="filter-status" role="status" class="readout readout--info mt-3">
+        <div class="readout-head">
+          <span class="readout-tag">Index</span>
+          <span id="filter-status-text" class="ml-auto">Showing all {posts.length} posts</span>
+        </div>
+      </div>
     </div>
 
     <!-- Featured post -->
@@ -42,7 +45,7 @@ const accentCycle = ['bg-cyan', 'bg-pink', 'bg-green', 'bg-red', 'bg-yellow'];
         <div class="grid grid-cols-1 md:grid-cols-2">
           <div class="border-b-2 border-ink dark:border-paper md:border-b-0 md:border-r-2">
             <div class="flex flex-wrap items-center gap-3 p-6 pb-0">
-              <span class="border-2 border-ink bg-pink px-2 py-1 font-mono text-xs font-black uppercase dark:border-paper">
+              <span class="border-2 border-ink bg-pink px-2 py-1 font-mono text-xs font-black uppercase text-ink dark:border-paper dark:bg-pink dark:text-ink">
                 Featured
               </span>
               <time datetime={featured.data.date.toISOString()} class="font-mono text-xs font-bold uppercase text-ink/70 dark:text-paper/70">
@@ -54,7 +57,7 @@ const accentCycle = ['bg-cyan', 'bg-pink', 'bg-green', 'bg-red', 'bg-yellow'];
             </div>
             <div class="p-6">
               <h2 class="font-display text-2xl font-black uppercase tracking-tight text-ink dark:text-paper sm:text-3xl break-words">
-                <Link href={`/blog/${featured.slug}/`} class="hover:underline decoration-2 underline-offset-4">
+                <Link href={`/blog/${featured.slug}/`} class="text-ink dark:text-paper hover:underline decoration-2 underline-offset-4">
                   {featured.data.title}
                 </Link>
               </h2>
@@ -77,8 +80,11 @@ const accentCycle = ['bg-cyan', 'bg-pink', 'bg-green', 'bg-red', 'bg-yellow'];
           </div>
           <div class="flex items-center justify-center bg-paper-muted p-8 dark:bg-ink">
             <div class="text-center">
-              <span class="font-display text-4xl sm:text-5xl md:text-6xl font-black uppercase text-ink/20 dark:text-paper/20 break-words">
-                {featured.data.layout}
+              <span class="block font-display text-6xl font-black uppercase leading-none tracking-tight text-ink sm:text-7xl dark:text-paper">
+                {readingTime(featured.body)}
+              </span>
+              <span class="mt-2 block font-mono text-xs font-bold uppercase tracking-tight text-ink/70 dark:text-paper/70">
+                min read
               </span>
             </div>
           </div>
@@ -97,16 +103,13 @@ const accentCycle = ['bg-cyan', 'bg-pink', 'bg-green', 'bg-red', 'bg-yellow'];
             <time datetime={post.data.date.toISOString()} class="border-2 border-ink px-2 py-1 font-mono text-xs font-black uppercase dark:border-paper">
               {formatDate(post.data.date)}
             </time>
-            <span class={`border-2 border-ink px-2 py-1 font-mono text-xs font-black uppercase dark:border-paper ${accentCycle[i % accentCycle.length]}`}>
-              {post.data.layout}
-            </span>
-            <span class="font-mono text-xs font-bold text-ink/70 dark:text-paper/70">
+            <span class={`border-2 border-ink px-2 py-1 font-mono text-xs font-black uppercase text-ink dark:border-paper dark:text-ink ${accentCycle[i % accentCycle.length]}`}>
               {readingTime(post.body)} min
             </span>
           </div>
 
           <h2 class="mt-4 font-display text-xl font-black uppercase tracking-tight text-ink dark:text-paper sm:text-2xl">
-            <Link href={`/blog/${post.slug}/`} class="hover:underline decoration-2 underline-offset-4">
+            <Link href={`/blog/${post.slug}/`} class="text-ink dark:text-paper hover:underline decoration-2 underline-offset-4">
               {post.data.title}
             </Link>
           </h2>
@@ -131,9 +134,19 @@ const accentCycle = ['bg-cyan', 'bg-pink', 'bg-green', 'bg-red', 'bg-yellow'];
       ))}
     </ul>
 
-    <p id="filter-empty" class="mt-8 hidden border-2 border-dashed border-ink p-6 font-bold dark:border-paper">
-      No posts match your search.
-    </p>
+    <div id="filter-empty" class="readout readout--fault mt-8 hidden">
+      <div class="readout-head">
+        <span class="readout-tag">No signal</span>
+      </div>
+      <div class="readout-body">
+        <p>
+          No posts match &ldquo;<span id="filter-empty-term" class="normal-case"></span>&rdquo;.
+        </p>
+        <p class="mt-1 text-ink/70 dark:text-paper/70">
+          Try a shorter term, or browse the tags.
+        </p>
+      </div>
+    </div>
   </SectionContainer>
 </LayoutWrapper>
 
@@ -141,12 +154,14 @@ const accentCycle = ['bg-cyan', 'bg-pink', 'bg-green', 'bg-red', 'bg-yellow'];
   (function() {
     var input = document.getElementById('post-filter');
     var items = Array.from(document.querySelectorAll('.post-item'));
-    var count = document.getElementById('filter-count');
+    var statusText = document.getElementById('filter-status-text');
     var empty = document.getElementById('filter-empty');
+    var emptyTerm = document.getElementById('filter-empty-term');
     var total = items.length;
 
     input?.addEventListener('input', function() {
-      var q = input.value.trim().toLowerCase();
+      var raw = input.value.trim();
+      var q = raw.toLowerCase();
       var visible = 0;
       for (var i = 0; i < items.length; i++) {
         var item = items[i];
@@ -154,7 +169,12 @@ const accentCycle = ['bg-cyan', 'bg-pink', 'bg-green', 'bg-red', 'bg-yellow'];
         item.classList.toggle('hidden', !hit);
         if (hit) visible++;
       }
-      if (count) count.textContent = q ? 'Showing ' + visible + ' of ' + total + ' posts' : 'Showing all ' + total + ' posts';
+      if (statusText) {
+        statusText.textContent = q
+          ? visible + ' of ' + total + ' posts match'
+          : 'Showing all ' + total + ' posts';
+      }
+      if (emptyTerm) emptyTerm.textContent = raw;
       empty?.classList.toggle('hidden', visible !== 0);
     });
   })();

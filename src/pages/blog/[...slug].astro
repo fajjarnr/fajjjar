@@ -2,6 +2,7 @@
 import { getCollection, getEntry, render, type CollectionEntry } from 'astro:content';
 import LayoutWrapper from '../../components/LayoutWrapper.astro';
 import PostFooter from '../../components/PostFooter.astro';
+import ReadingInstrument from '../../components/ReadingInstrument.astro';
 import { formatDate, formatDateLong, readingTime, slugTag } from '../../utils/blog';
 import { siteMetadata } from '../../data/siteMetadata';
 
@@ -113,6 +114,11 @@ const relatedPosts = allPosts
           <Content />
         </div>
 
+        <!-- Reading telemetry: where the reader is, how much is left -->
+        <div class="mt-16">
+          <ReadingInstrument minutes={readingMinutes} />
+        </div>
+
         <!-- Related posts -->
         {relatedPosts.length > 0 && (
           <div class="mt-16 border-t-4 border-ink pt-8 dark:border-paper">
@@ -221,22 +227,4 @@ const relatedPosts = allPosts
     </div>
   </div>
 
-  <!-- Reading progress bar -->
-  <div class="fixed top-0 left-0 right-0 z-[60] h-1 bg-transparent">
-    <div id="reading-progress" class="h-full bg-pink transition-[width] duration-100" style="width: 0%"></div>
-  </div>
-
-  <script is:inline>
-    (function() {
-      var progressBar = document.getElementById('reading-progress');
-      function updateProgress() {
-        var scrollTop = window.scrollY;
-        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-        if (progressBar) progressBar.style.width = progress + '%';
-      }
-      window.addEventListener('scroll', updateProgress, { passive: true });
-      updateProgress();
-    })();
-  </script>
 </LayoutWrapper>

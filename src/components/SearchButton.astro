@@ -14,7 +14,7 @@ import { siteMetadata } from '../data/siteMetadata';
 </button>
 
 <!-- Search Modal -->
-<div id="search-modal" class="fixed inset-0 z-50 hidden">
+<div id="search-modal" role="dialog" aria-modal="true" aria-label="Search posts" class="fixed inset-0 z-50 hidden">
   <div id="search-backdrop" class="absolute inset-0 bg-black/70"></div>
   <div class="relative mx-auto mt-20 max-w-lg px-4">
     <div class="border-2 border-ink bg-white shadow-brutal-lg dark:border-paper dark:bg-ink">
@@ -22,10 +22,12 @@ import { siteMetadata } from '../data/siteMetadata';
         <svg class="h-5 w-5 text-ink dark:text-paper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
+        <label for="search-input" class="sr-only">Search posts</label>
         <input
           id="search-input"
           type="text"
           placeholder="Search posts..."
+          autocomplete="off"
           class="flex-1 bg-transparent text-sm font-bold text-ink outline-none placeholder:font-normal placeholder:text-ink/50 focus:ring-0 dark:text-paper dark:placeholder:text-paper/50"
         />
         <button
@@ -38,6 +40,12 @@ import { siteMetadata } from '../data/siteMetadata';
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
+      </div>
+      <div id="search-status" role="status" class="readout readout--info readout--flush">
+        <div class="readout-head">
+          <span class="readout-tag">Index</span>
+          <span id="search-status-text" class="flex-1">Ready</span>
+        </div>
       </div>
       <div id="search-results" class="max-h-80 overflow-y-auto p-2"></div>
     </div>
@@ -53,14 +61,27 @@ import { siteMetadata } from '../data/siteMetadata';
     var closeBtn = document.getElementById('search-close');
     var input = document.getElementById('search-input');
     var results = document.getElementById('search-results');
+    var status = document.getElementById('search-status');
+    var statusTag = status ? status.querySelector('.readout-tag') : null;
+    var statusText = document.getElementById('search-status-text');
     var searchIndex = [];
 
+    function setStatus(tag, text, fault) {
+      if (!status) return;
+      if (statusText) statusText.textContent = text;
+      if (statusTag) statusTag.textContent = tag;
+      status.classList.toggle('readout--fault', Boolean(fault));
+    }
+
     async function loadSearchIndex() {
+      setStatus('Index', 'Loading index\u2026', false);
       try {
         var res = await fetch('/search.json');
         searchIndex = await res.json();
+        setStatus('Index', searchIndex.length + ' docs indexed', false);
       } catch (e) {
         searchIndex = [];
+        setStatus('Fault', 'Index unavailable', true);
       }
     }
 
@@ -75,10 +96,17 @@ import { siteMetadata } from '../data/siteMetadata';
       }).slice(0, 10);
     }
 
+
     function renderResults(items) {
       if (!results) return;
       if (items.length === 0) {
-        results.innerHTML = '<p class="px-4 py-3 text-sm font-normal text-ink/70 dark:text-paper/70">No results found.</p>';
+        results.innerHTML =
+          '<div class="readout readout--fault">' +
+          '<div class="readout-head"><span class="readout-tag">No signal</span></div>' +
+          '<div class="readout-body">' +
+          '<p>No document matches this query.</p>' +
+          '<p class="mt-1 text-ink/70 dark:text-paper/70">Check the spelling, or try a tag name.</p>' +
+          '</div></div>';
         return;
       }
       results.innerHTML = items.map(function(item) {
@@ -89,21 +117,54 @@ import { siteMetadata } from '../data/siteMetadata';
       }).join('');
     }
 
-    trigger?.addEventListener('click', function() {
-      modal?.classList.remove('hidden');
+    function openModal() {
+      if (!modal) return;
+      modal.classList.remove('hidden');
       input?.focus();
-      loadSearchIndex();
-    });
+      loadSearchIndex().then(function() {
+        if (input && input.value.trim()) input.dispatchEvent(new Event('input'));
+      });
+    }
 
-    backdrop?.addEventListener('click', function() { modal?.classList.add('hidden'); });
-    closeBtn?.addEventListener('click', function() { modal?.classList.add('hidden'); });
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.add('hidden');
+      trigger?.focus();
+    }
+
+    trigger?.addEventListener('click', openModal);
+    backdrop?.addEventListener('click', closeModal);
+    closeBtn?.addEventListener('click', closeModal);
 
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') modal?.classList.add('hidden');
+      if (e.key === 'Escape' && !modal?.classList.contains('hidden')) closeModal();
+    });
+
+    // Keep Tab inside the dialog while it is open.
+    modal?.addEventListener('keydown', function(e) {
+      if (e.key !== 'Tab') return;
+      var focusables = modal.querySelectorAll('input, button, a[href]');
+      if (!focusables.length) return;
+      var first = focusables[0];
+      var last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     });
 
     input?.addEventListener('input', function() {
-      renderResults(fuzzySearch(input?.value || ''));
+      var q = input?.value.trim() || '';
+      var hits = fuzzySearch(q);
+      if (q) {
+        setStatus('Query', hits.length + ' of ' + searchIndex.length + ' docs match', hits.length === 0);
+      } else {
+        setStatus('Index', 'Ready', false);
+      }
+      renderResults(hits);
     });
   })();
 </script>
