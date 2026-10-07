@@ -425,12 +425,18 @@ select {
       this fix has to live here rather than in the utility list.
    3. The typography plugin gives h1 a 42px bottom margin and almost no top
       margin, which read as cramped above and loose below.
-   Balance both margins, clear the glyph box, and keep wrapping titles even. */
+   Balance both margins and clear the glyph box. No `text-wrap: balance` here:
+   it deliberately shortens every line to even them out, which leaves a third
+   of the column empty while a word could still have fitted.
+   The rule under the title is Alert Magenta: the action colour marking the one
+   heading on the page, not a decorative underline. */
 .post-prose.prose h1 {
-  line-height: 1.25;
+  /* 1.4, not 1.25: the 4px rule at 10px offset sits close under the caps, so a
+     wrapped second line needs the extra 12px of clearance to read cleanly. */
+  line-height: 1.4;
   margin-top: 0;
   margin-bottom: 1.5rem;
-  text-wrap: balance;
+  text-decoration-color: #FF1493;
 }
 
 /* The tag row carries mb-6, so the title's own top margin would otherwise

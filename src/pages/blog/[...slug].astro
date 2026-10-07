@@ -84,8 +84,12 @@ const relatedPosts = allPosts
           </div>
         )}
 
+        <!-- Title and meta sit flush with the tag row and the panel's outer
+             edge. The panel's own padding insets its body text, which is the
+             intended hierarchy: the heading is the container's label, the
+             prose is its contents. -->
         <!-- Title. Line-height lives in global.css, not here: Tailwind's
-             text-5xl also emits a line-height, and it wins over leading-*. -->
+             text-5xl also emits a line-height and wins over leading-*. -->
         <h1 class="font-display text-4xl font-black uppercase italic tracking-tight text-ink underline decoration-4 underline-offset-[10px] dark:text-paper sm:text-5xl break-words">
           {title}
         </h1>
