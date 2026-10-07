@@ -6,7 +6,7 @@ import LayoutWrapper from '../components/LayoutWrapper.astro';
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 ---
 
-<LayoutWrapper title="404 — Page Not Found" description="The page you are looking for does not exist" url="/404/">
+<LayoutWrapper title="404 — Page not found" description="That page does not exist, or it moved somewhere else." url="/404/">
   <section class="mx-auto flex max-w-[760px] flex-col items-center px-4 py-20 sm:px-6 sm:py-32 reveal">
     <!-- Fault report: what was requested, what came back, what is still available -->
     <div class="readout readout--fault w-full text-left">

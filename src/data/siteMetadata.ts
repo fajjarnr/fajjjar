@@ -1,5 +1,11 @@
 export const siteMetadata = {
-  title: 'fajjjar.my.id',
+  // Site name, used for og:site_name, RSS, and the footer.
+  title: 'Fajar — DevOps / Platform Engineer',
+  // The homepage <title>: the site name plus the specialisms, so the one page
+  // with no page-specific title still says what the site is about.
+  homeTitle: 'Fajar — DevOps & Platform Engineer on OpenShift',
+  // Appended to every inner page's <title> so a shared link carries the brand.
+  titleSuffix: 'Fajar',
   author: 'Fajar',
   headerTitle: 'FAJAR.DEV',
   description: 'DevOps / Platform Engineer — building platforms that hold up in production.',

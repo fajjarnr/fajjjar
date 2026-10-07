@@ -23,7 +23,7 @@ const { Content, headings } = await render(entry);
 
 const {
   title,
-  description,
+  summary,
   date,
   lastmod,
   tags,
@@ -60,7 +60,7 @@ const relatedPosts = allPosts
 
 <LayoutWrapper
   title={title}
-  description={description ?? ''}
+  description={summary ?? ''}
   url={url}
   type="article"
   publishedTime={date.toISOString()}

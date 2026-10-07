@@ -21,7 +21,7 @@ const tags = [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
 const accentCycle = ['bg-yellow', 'bg-pink', 'bg-cyan', 'bg-green', 'bg-red'];
 ---
 
-<LayoutWrapper title="Tags" description="Browse posts by tag" url="/tags/">
+<LayoutWrapper title="Browse every topic on the blog" description="Every topic covered across the blog — OpenShift, Kubernetes, automation, observability — with post counts for each." url="/tags/">
   <SectionContainer>
     <PageTitle title="Tags" description={`${tags.length} tags across all posts`} />
 

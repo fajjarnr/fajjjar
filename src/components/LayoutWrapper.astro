@@ -8,6 +8,8 @@ import ScrollTop from './ScrollTop.astro';
 
 interface Props {
   title?: string;
+  /** Skip the "{title} · Fajar" suffix — for the homepage, which carries its own. */
+  titleIsComplete?: boolean;
   description?: string;
   image?: string;
   url?: string;
@@ -17,7 +19,8 @@ interface Props {
 }
 
 const {
-  title = siteMetadata.title,
+  title = siteMetadata.homeTitle,
+  titleIsComplete = false,
   description = siteMetadata.description,
   image = siteMetadata.socialBanner,
   url = '/',
@@ -25,6 +28,12 @@ const {
   publishedTime,
   tags = [],
 } = Astro.props;
+
+// Every inner page carries the brand; the homepage title already does.
+const fullTitle =
+  titleIsComplete || title.endsWith(siteMetadata.titleSuffix)
+    ? title
+    : `${title} \u00b7 ${siteMetadata.titleSuffix}`;
 
 const siteUrl = Astro.site?.toString() || 'https://astro-tailwind-blog.pages.dev';
 const fullUrl = new URL(url, siteUrl).href;
@@ -36,13 +45,13 @@ const fullImage = new URL(image, siteUrl).href;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={fullUrl} />
 
     <!-- Open Graph -->
     <meta property="og:site_name" content={siteMetadata.title} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={fullUrl} />
     <meta property="og:image" content={fullImage} />
@@ -58,10 +67,10 @@ const fullImage = new URL(image, siteUrl).href;
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@fajarcodes" />
     <meta name="twitter:creator" content="@fajarcodes" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={fullImage} />
-    <meta name="twitter:image:alt" content={title} />
+    <meta name="twitter:image:alt" content={fullTitle} />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

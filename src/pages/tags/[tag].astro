@@ -35,7 +35,7 @@ posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 ---
 
-<LayoutWrapper title={`Posts tagged "${tag}"`} description={`All posts tagged ${tag}`} url={`/tags/${slugTag(tag)}/`}>
+<LayoutWrapper title={`${tag} posts — platform engineering notes`} description={`Every post tagged ${tag} on the blog: practitioner notes on OpenShift, Kubernetes, automation, and production platforms.`} url={`/tags/${slugTag(tag)}/`}>
   <SectionContainer>
     <a
       href="/tags/"
