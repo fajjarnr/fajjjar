@@ -30,6 +30,9 @@ export const siteMetadata = {
   },
   newsletter: {
     provider: 'buttondown',
+    // The Buttondown username; the embed form posts to
+    // https://buttondown.email/api/emails/embed-subscribe/<user>.
+    buttondownUser: import.meta.env.PUBLIC_BUTTONDOWN_USER,
   },
   comments: {
     provider: 'giscus',

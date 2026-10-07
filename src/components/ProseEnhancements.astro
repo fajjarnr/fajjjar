@@ -1,0 +1,84 @@
+---
+/**
+ * Reading affordances for article prose: a copy button on every code block and
+ * a permalink anchor on every heading that has an id.
+ *
+ * Both are progressive enhancement — with JavaScript off the code block is
+ * still selectable and the heading is still linkable by its fragment, because
+ * the anchors are built from the ids rehype already emitted.
+ */
+---
+
+<script is:inline>
+  (function () {
+    var article = document.querySelector('article.post-prose');
+    if (!article) return;
+
+    /* Copy button: one per pre, revealed on hover or keyboard focus. */
+    var blocks = article.querySelectorAll('pre');
+    for (var i = 0; i < blocks.length; i++) {
+      (function (pre) {
+        if (pre.querySelector('.code-copy')) return;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'code-copy';
+        button.textContent = 'Copy';
+        button.setAttribute('aria-label', 'Copy code to clipboard');
+
+        button.addEventListener('click', function () {
+          var code = pre.querySelector('code');
+          var text = (code || pre).innerText.replace(/\n$/, '');
+
+          var done = function (ok) {
+            button.textContent = ok ? 'Copied' : 'Failed';
+            button.classList.toggle('is-done', ok);
+            setTimeout(function () {
+              button.textContent = 'Copy';
+              button.classList.remove('is-done');
+            }, 1600);
+          };
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+          } else {
+            // Older browsers and non-secure origins have no async clipboard.
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            var ok = false;
+            try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+            document.body.removeChild(ta);
+            done(ok);
+          }
+        });
+
+        wrap.appendChild(button);
+      })(blocks[i]);
+    }
+
+    /* Heading anchors: the id is already there from the renderer, so this only
+       adds the affordance. */
+    var headings = article.querySelectorAll('h2[id], h3[id], h4[id]');
+    for (var j = 0; j < headings.length; j++) {
+      (function (heading) {
+        if (heading.querySelector('.heading-anchor')) return;
+        var link = document.createElement('a');
+        link.className = 'heading-anchor';
+        link.href = '#' + heading.id;
+        link.setAttribute('aria-label', 'Link to this section');
+        link.textContent = '#';
+        heading.appendChild(link);
+      })(headings[j]);
+    }
+  })();
+</script>

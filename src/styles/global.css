@@ -226,11 +226,9 @@ select {
     border-color var(--dur-state) ease;
 }
 
-/* An element that is itself a transform is not a good transform target. The
-   scroll-top button and the reading instrument are moved by their own motion,
-   so their interactions stay on colour and shadow. */
-#scroll-top,
-#reading-instrument {
+/* The scroll-top button is moved by its own enter animation, so its
+   interactions stay on colour and shadow rather than transform. */
+#scroll-top {
   transition:
     box-shadow var(--dur-feedback) ease-out,
     background-color var(--dur-state) ease,
@@ -322,12 +320,6 @@ select {
 #search-results > a:nth-child(4) { animation-delay: 120ms; }
 #search-results > a:nth-child(5) { animation-delay: 160ms; }
 #search-results > a:nth-child(n + 6) { animation-delay: 200ms; }
-
-/* The reading meter fills a segment at a time instead of switching, so the
-   level reads as a level rather than as twelve unrelated squares. */
-.readout-level span {
-  transition: background-color 180ms ease;
-}
 
 /* Hover glow on primary buttons */
 .bg-pink:hover,
@@ -454,6 +446,75 @@ select {
   letter-spacing: -0.025em;
 }
 
+/* Copy-to-clipboard control on every code block. Revealed on hover or keyboard
+   focus; always visible on touch, where there is no hover to reveal it. */
+.code-block {
+  position: relative;
+}
+
+.code-copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: 2px solid #FFFDF5;
+  background: #111111;
+  padding: 4px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #FFFDF5;
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity var(--dur-state) ease, background-color var(--dur-state) ease;
+}
+
+.code-block:hover .code-copy,
+.code-copy:focus-visible {
+  opacity: 1;
+}
+
+.code-copy.is-done {
+  background: #22F06B;
+  border-color: #111111;
+  color: #111111;
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .code-copy {
+    opacity: 1;
+  }
+}
+
+/* Heading permalink. Hidden until the heading is hovered or the link is
+   focused, so it never competes with the heading text itself. */
+.heading-anchor {
+  margin-left: 0.5rem;
+  font-weight: 900;
+  color: #E01281;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity var(--dur-state) ease;
+}
+
+.post-prose.prose h2:hover .heading-anchor,
+.post-prose.prose h3:hover .heading-anchor,
+.post-prose.prose h4:hover .heading-anchor,
+.heading-anchor:focus-visible {
+  opacity: 1;
+}
+
+.heading-anchor:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+}
+
+.dark .heading-anchor {
+  color: #FF1493;
+}
+
 .post-prose.prose h2 {
   margin-top: 3rem;
   border-bottom: 4px solid #111111;
@@ -468,6 +529,28 @@ select {
 .post-prose.prose h3 {
   margin-top: 2rem;
   font-size: 1.5rem;
+}
+
+/* Cards and panels sit inside the prose article but are not prose: related
+   posts, the author block, the newsletter, the comments. Without this escape
+   the `.post-prose.prose h2/h3` rules above win on specificity and inflate a
+   16px panel heading to 30px, add a 48px top margin, and hang an article
+   heading's 4px rule under it. Reset every property those rules touch. */
+.post-prose.prose .not-prose h2,
+.post-prose.prose .not-prose h3,
+.post-prose.prose .not-prose h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
+/* Prose paragraph margins would fight the panel's own spacing. */
+.post-prose.prose .not-prose p {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .post-prose.prose :where(p, li, td, blockquote) a {
@@ -685,21 +768,6 @@ select {
   text-transform: uppercase;
 }
 
-/* Level meter: one segment per twelfth of the document. */
-.readout-level {
-  display: flex;
-  gap: 2px;
-  height: 0.75rem;
-}
-
-.readout-level span {
-  flex: 1;
-  border: 2px solid #111111;
-}
-
-.dark .readout-level span {
-  border-color: #FFFDF5;
-}
 
 /* One signal per state. */
 .readout--info .readout-tag {
@@ -710,15 +778,6 @@ select {
   background: #FF4B3E;
 }
 
-.readout-level span.on {
-  background: #00D9FF;
-}
-
-/* Reaching the end of a document is the one positive state in the vocabulary. */
-.readout.is-complete .readout-tag,
-.readout.is-complete .readout-level span.on {
-  background: #22F06B;
-}
 
 /* A readout that sits inside an existing panel: no frame of its own, just a rule. */
 .readout--flush {

@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import LayoutWrapper from '../../components/LayoutWrapper.astro';
+import SectionContainer from '../../components/SectionContainer.astro';
+import Link from '../../components/Link.astro';
+import { formatDate, readingTime } from '../../utils/blog';
+import { getSeries } from '../../utils/series';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const series = getSeries(posts);
+
+const accentCycle = ['bg-yellow', 'bg-pink', 'bg-cyan', 'bg-green', 'bg-red'];
+---
+
+<LayoutWrapper
+  title="Series"
+  description="Multi-part writing on platform engineering, meant to be read in order."
+  url="/series/"
+>
+  <SectionContainer>
+    <div class="mb-10 border-b-4 border-ink pb-4 dark:border-paper">
+      <h1 class="font-display font-black uppercase tracking-tight text-4xl text-ink dark:text-paper sm:text-5xl">
+        Series
+      </h1>
+      <p class="mt-3 font-bold text-ink/70 dark:text-paper/70">
+        {series.length} {series.length === 1 ? 'series' : 'series'}, meant to be read in order
+      </p>
+    </div>
+
+    {series.length === 0 && (
+      <div class="readout readout--info">
+        <div class="readout-head">
+          <span class="readout-tag">Index</span>
+          <span class="ml-auto truncate">No series yet</span>
+        </div>
+        <div class="readout-body">
+          <p>Add <code>series:</code> to a post's frontmatter to group it here.</p>
+        </div>
+      </div>
+    )}
+
+    <div class="space-y-8">
+      {series.map((group, i) => (
+        <article class="border-2 border-ink bg-white shadow-brutal-md dark:border-paper dark:bg-ink">
+          <header class={`flex flex-wrap items-center justify-between gap-3 border-b-2 border-ink px-6 py-4 dark:border-paper ${accentCycle[i % accentCycle.length]}`}>
+            <h2 class="font-display font-black uppercase tracking-tight text-xl text-ink">
+              {group.name}
+            </h2>
+            <span class="border-2 border-ink bg-white px-2 py-1 font-mono text-xs font-black uppercase text-ink dark:border-paper dark:bg-ink dark:text-paper">
+              {group.posts.length} parts
+            </span>
+          </header>
+          <ol class="divide-y-2 divide-ink dark:divide-paper">
+            {group.posts.map((post, n) => (
+              <li class="flex items-start gap-4 p-6">
+                <span class="shrink-0 border-2 border-ink bg-ink px-2 py-1 font-mono text-xs font-black text-paper dark:border-paper dark:bg-paper dark:text-ink">
+                  {String(n + 1).padStart(2, '0')}
+                </span>
+                <div class="min-w-0">
+                  <h3 class="font-display font-black uppercase tracking-tight text-lg text-ink dark:text-paper">
+                    <Link href={`/blog/${post.slug}/`} class="text-ink dark:text-paper">
+                      {post.data.title}
+                    </Link>
+                  </h3>
+                  {post.data.summary && (
+                    <p class="mt-2 text-sm leading-relaxed text-ink/70 dark:text-paper/70">
+                      {post.data.summary}
+                    </p>
+                  )}
+                  <p class="mt-2 font-mono text-xs font-bold uppercase text-ink/70 dark:text-paper/70">
+                    {formatDate(post.data.date)} · {readingTime(post.body)} min read
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </article>
+      ))}
+    </div>
+  </SectionContainer>
+</LayoutWrapper>

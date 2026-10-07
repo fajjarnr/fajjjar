@@ -97,7 +97,7 @@
     "motion": [
       { "name": "press", "value": "transform .15s ease, box-shadow .15s ease", "purpose": "The universal hover/press transition: translate toward the shadow while it shrinks one tier." },
       { "name": "reveal", "value": "fadeUp .6s ease-out", "purpose": "Section entrance: 20px rise with fade, used on home bands and list items." },
-      { "name": "instrument-readout", "value": "width .1s linear on the level meter", "purpose": "The reading instrument's only motion: the meter tracks the scroll position directly, no easing, no flourish." }
+      { "name": "reading-progress", "value": "width .1s linear on the top hairline", "purpose": "The progress bar tracks scroll position directly, no easing, no flourish — the one place a width transition is the meaning rather than an effect." }
     ],
     "breakpoints": [
       { "name": "sm", "value": "640px" },

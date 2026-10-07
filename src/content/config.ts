@@ -13,6 +13,10 @@ const blog = defineCollection({
     authors: z.array(z.string()).default(['default']),
     layout: z.enum(['PostLayout', 'PostSimple', 'PostBanner']).default('PostLayout'),
     canonicalUrl: z.string().optional(),
+    // Posts sharing a `series` value form an ordered reading path. `seriesPart`
+    // orders them; it falls back to date order when omitted.
+    series: z.string().optional(),
+    seriesPart: z.number().int().positive().optional(),
   }),
 });
 

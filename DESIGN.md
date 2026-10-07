@@ -150,8 +150,8 @@ A high-chroma signal palette on warm off-white stock, bound together by near-bla
 - **Caution Yellow** (#FFE500): the state and utility colour. Sticky header strip, tag badges, topic chips, icon buttons, newsletter accents, selection highlight. Also the default focus ring's contrast partner. Highest-legibility accent in the set (14.8:1 with ink).
 
 ### Secondary
-- **Telemetry Cyan** (#00D9FF): informational role. Post-layout badges on the home feed, the search/tag chips, the "All tags" back link, project metadata tags, the reading instrument's tag and level meter, and every readout tag except a fault. Reads as readout, not alarm (11.12:1 with ink).
-- **Nominal Green** (#22F06B): positive counts and utilities — the "N posts" counter, the scroll-to-top button, share buttons, "what I write about" chips, and the reading instrument once the document is finished (12.36:1 with ink).
+- **Telemetry Cyan** (#00D9FF): informational role. Post-layout badges on the home feed, the search/tag chips, the "All tags" back link, project metadata tags, and every readout tag except a fault. Reads as readout, not alarm (11.12:1 with ink).
+- **Nominal Green** (#22F06B): positive counts and utilities — the "N posts" counter, the scroll-to-top button, share buttons, and "what I write about" chips (12.36:1 with ink).
 - **Fault Red** (#FF4B3E): the fault signal. The readout tag on a missing route, an empty result set, or an unavailable search index; also one of the rotating project-index accents. Reserved for warnings and error states; do not expand it into decorative duty (5.69:1 with ink).
 - **Fault Red Light** (#FF9580): the syntax-highlighting tier. Used only for regex, `important`, and variable tokens inside code blocks, where the palette needs a fourth warm step that stays legible on the `#111111` code ground.
 - **Auxiliary Violet** (#A66CFF): defined and available, currently unused in the shipped UI. Held for a future note/category role (5.58:1 with ink).
@@ -202,7 +202,7 @@ The home hero is a two-column grid from `lg` up: the positioning copy on the lef
 
 Article pages switch to a two-column grid at `lg`: a fluid main column and a fixed 320px sidebar (`lg:grid-cols-[1fr_320px]`, 40px gap) holding the sticky table of contents, tags, and share panel at `top-24`. Below `lg` the sidebar disappears entirely and the article takes the full width.
 
-The reading instrument is the one boxed element inside an article's prose column; the column itself stays on the graph-paper ground, so the panel reads as an instrument rather than as a page container.
+The article prose column sits directly on the graph-paper ground with no panel of its own. The reading progress hairline runs full-bleed across the top of the viewport, above the header, in Alert Magenta.
 
 Grids step 1 → 2 columns at `sm` for post and project lists, 1 → 2 → 3 at `sm`/`lg` for the tag index. The featured card on the blog index is a 1 → 2 column split at `md`, with the metadata panel in Graph Shade on the right.
 
@@ -231,7 +231,7 @@ Modal surfaces and overlays use the one **ambient** treatment: the search modal 
 
 The world is an instrument panel, so nothing springs and nothing floats. Things power on, read out, and land. One arrival curve carries the whole system — `cubic-bezier(0.16, 1, 0.3, 1)`, a decelerating settle with no overshoot — and three durations: 120ms for feedback, 200ms for a state change, 380ms for a surface settling. Bounce and elastic curves are not in the vocabulary; a thing that lands is not a thing that bounces.
 
-Motion is limited to `transform`, `opacity`, and `stroke-dashoffset`. Blur, filter, and layout-driving properties (`width`, `height`, `top`, `left`, margins) are not animated. The reading meter is the one exception to "animate transforms only": its segments change `background-color`, because a level filling should read as a level rather than as twelve unrelated squares.
+Motion is limited to `transform`, `opacity`, `stroke-dashoffset`, and the reading progress bar's `width` — the one property whose animation *is* the meaning, since a progress bar that does not grow is not a progress bar.
 
 The one authored sequence is the hero schematic's **boot**: the control plane powers on, the wires draw outward from it in the order the eye follows them, junctions land on the bus, the cluster frames drop into place, the status chips fill, and only then does the sync loop begin at 1.35s. Everything after it is supporting feedback — the search dialog settling down from above, scroll-to-top sliding in from its own edge, search hits landing in sequence, sections rising 16px.
 
@@ -290,9 +290,9 @@ Border colour is Console Black in light theme and Chart Paper in dark, always vi
 The recurring home-page pattern: a full-width band bounded by a 2–4px black rule, optionally tinted (Caution Yellow ticker, Graph Shade topic strip), containing a single 1180px-shell row. It is what gives the home page its specification-sheet rhythm and is the system's main structural signature — reach for it before inventing a new section container.
 
 ### Signature Component: Console Readout
-The instrument vocabulary for *states*, not pages: the article reading telemetry, an empty filter or search result set, a missing route, an unavailable index. A readout is a Panel White box (`.readout`) with a mono header row naming the signal in a bordered accent tag, then a mono body reporting machine values. `readout--info` is cyan (informational), `readout--fault` is red (nothing found or nothing available), and `is-complete` flips the tag and meter to Nominal Green once a document is finished. `readout--flush` drops the frame and shadow for a readout that sits inside an existing panel.
+The instrument vocabulary for *states*, not pages: an empty filter or search result set, a missing route, an unavailable index. A readout is a Panel White box (`.readout`) with a mono header row naming the signal in a bordered accent tag, then a mono body reporting machine values. `readout--info` is cyan (informational), `readout--fault` is red (nothing found or nothing available). `readout--flush` drops the frame and shadow for a readout that sits inside an existing panel.
 
-**The Signal Word Rule.** A readout's tag states the state in words — `Reading`, `Index`, `Query`, `No signal`, `Fault` — and never appears as colour alone. The accent reinforces the word; it does not replace it.
+**The Signal Word Rule.** A readout's tag states the state in words — `Index`, `Query`, `No signal`, `Fault` — and never appears as colour alone. The accent reinforces the word; it does not replace it.
 
 **The Data Case Rule.** Readout chrome is uppercase mono, but a value the reader supplied or a real path keeps its own case: a requested path renders `/blog/nope/`, not `/BLOG/NOPE/`. Uppercase is for labels, never for data.
 

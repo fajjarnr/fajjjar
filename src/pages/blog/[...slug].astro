@@ -2,8 +2,9 @@
 import { getCollection, getEntry, render, type CollectionEntry } from 'astro:content';
 import LayoutWrapper from '../../components/LayoutWrapper.astro';
 import PostFooter from '../../components/PostFooter.astro';
-import ReadingInstrument from '../../components/ReadingInstrument.astro';
+import ProseEnhancements from '../../components/ProseEnhancements.astro';
 import { formatDate, formatDateLong, readingTime, slugTag } from '../../utils/blog';
+import { relatedPosts, seriesFor } from '../../utils/series';
 import { siteMetadata } from '../../data/siteMetadata';
 
 export async function getStaticPaths() {
@@ -48,14 +49,16 @@ const shareText = encodeURIComponent(title);
 const banner = layout === 'PostBanner' ? images?.[0] : undefined;
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
-const relatedPosts = allPosts
-  .filter((p) => p.slug !== entry.slug)
-  .map((p) => ({
-    ...p,
-    commonTags: p.data.tags.filter((t) => tags.includes(t)).length,
-  }))
-  .sort((a, b) => b.commonTags - a.commonTags || b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3);
+const related = relatedPosts(entry, allPosts, 3);
+const series = seriesFor(entry, allPosts);
+
+// Inside a series, prev/next follow the series and never leave it — the ends
+// are ends, not a jump back into the archive. Standalone posts walk the whole
+// archive in date order.
+const byDate = [...allPosts].sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+const position = byDate.findIndex((p) => p.slug === entry.slug);
+const previous = series ? series.previous : position > 0 ? byDate[position - 1] : null;
+const next = series ? series.next : position < byDate.length - 1 ? byDate[position + 1] : null;
 ---
 
 <LayoutWrapper
@@ -118,6 +121,21 @@ const relatedPosts = allPosts
           </div>
         )}
 
+        <!-- Series position, when this post is part of one -->
+        {series && (
+          <div class="mt-8 flex flex-wrap items-center gap-3 border-2 border-ink bg-paper-muted px-4 py-3 shadow-brutal-sm dark:border-paper dark:bg-ink">
+            <span class="border-2 border-ink bg-cyan px-2 py-1 font-mono text-xs font-black uppercase text-ink dark:border-paper dark:bg-cyan dark:text-ink">
+              Part {series.position} of {series.total}
+            </span>
+            <a
+              href="/series/"
+              class="font-display text-sm font-black uppercase tracking-tight text-ink underline decoration-2 underline-offset-4 hover:decoration-4 dark:text-paper"
+            >
+              {series.name}
+            </a>
+          </div>
+        )}
+
         <!-- Content: Panel White, bounded by the system's 2px rule and a Brutal
              MD shadow, so the prose column reads as a raised surface like every
              other panel. Padding matches the card tier (24px, 32px from sm). -->
@@ -125,28 +143,59 @@ const relatedPosts = allPosts
           <Content />
         </div>
 
-        <!-- Reading telemetry: where the reader is, how much is left -->
-        <div class="mt-16">
-          <ReadingInstrument minutes={readingMinutes} />
-        </div>
+        <!-- Prev / next through the archive, or through the series -->
+        {(previous || next) && (
+          <nav aria-label="Post navigation" class="mt-16 grid gap-4 border-t-4 border-ink pt-8 dark:border-paper sm:grid-cols-2">
+            {previous ? (
+              <a
+                href={`/blog/${previous.slug}/`}
+                rel="prev"
+                class="group border-2 border-ink bg-white p-4 shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink"
+              >
+                <span class="font-mono text-xs font-bold uppercase text-ink/70 dark:text-paper/70">
+                  &larr; Previous
+                </span>
+                <span class="mt-2 block font-display text-sm font-black uppercase tracking-tight text-ink group-hover:underline decoration-2 underline-offset-4 dark:text-paper">
+                  {previous.data.title}
+                </span>
+              </a>
+            ) : (
+              <span class="hidden sm:block" />
+            )}
+            {next && (
+              <a
+                href={`/blog/${next.slug}/`}
+                rel="next"
+                class="group border-2 border-ink bg-white p-4 shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink sm:text-right"
+              >
+                <span class="font-mono text-xs font-bold uppercase text-ink/70 dark:text-paper/70">
+                  Next &rarr;
+                </span>
+                <span class="mt-2 block font-display text-sm font-black uppercase tracking-tight text-ink group-hover:underline decoration-2 underline-offset-4 dark:text-paper">
+                  {next.data.title}
+                </span>
+              </a>
+            )}
+          </nav>
+        )}
 
-        <!-- Related posts -->
-        {relatedPosts.length > 0 && (
-          <div class="mt-16 border-t-4 border-ink pt-8 dark:border-paper">
+        <!-- Related posts, ranked by tag overlap then shared title words -->
+        {related.length > 0 && (
+          <div class="not-prose mt-16 border-t-4 border-ink pt-8 dark:border-paper">
             <h2 class="font-display text-lg font-black uppercase tracking-tight text-ink dark:text-paper">
               Related posts
             </h2>
             <ul class="mt-6 grid gap-4 sm:grid-cols-3">
-              {relatedPosts.map((post) => (
+              {related.map((post) => (
                 <li>
                   <a
                     href={`/blog/${post.slug}/`}
-                    class="block border-2 border-ink bg-white p-4 shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink"
+                    class="group block border-2 border-ink bg-white p-4 shadow-brutal-sm transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-brutal-xs dark:border-paper dark:bg-ink"
                   >
                     <p class="font-mono text-xs font-bold uppercase text-ink/70 dark:text-paper/70">
                       {formatDate(post.data.date)}
                     </p>
-                    <h3 class="mt-2 font-display text-sm font-black uppercase tracking-tight text-ink dark:text-paper">
+                    <h3 class="mt-2 font-display text-sm font-black uppercase tracking-tight text-ink decoration-2 underline-offset-4 group-hover:underline dark:text-paper">
                       {post.data.title}
                     </h3>
                   </a>
@@ -238,4 +287,31 @@ const relatedPosts = allPosts
     </div>
   </div>
 
+
+<!-- Copy buttons and heading anchors for the prose above. -->
+<ProseEnhancements />
+
+<!-- Reading progress: a hairline at the very top of the viewport, filled in
+     the action colour. No panel, no label — just the position in the page. -->
+<div class="fixed top-0 left-0 right-0 z-[60] h-1 bg-transparent" aria-hidden="true">
+  <div id="reading-progress" class="h-full bg-pink transition-[width] duration-100" style="width: 0%"></div>
+</div>
+
+<script is:inline>
+  (function () {
+    var bar = document.getElementById('reading-progress');
+    if (!bar) return;
+
+    function update() {
+      var doc = document.documentElement;
+      var scrollable = doc.scrollHeight - window.innerHeight;
+      var ratio = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 1;
+      bar.style.width = ratio * 100 + '%';
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>
 </LayoutWrapper>

@@ -63,7 +63,21 @@ images: string[]
 draft: boolean
 lastmod: date
 canonicalUrl: string
+series: string          # posts sharing this value form a reading path at /series/
+seriesPart: number      # order within the series; falls back to date order
 ```
+
+### Reader features
+
+- **Series**: set `series` (and optionally `seriesPart`) in frontmatter. The post
+  gets a "Part N of M" badge and its prev/next follow the series instead of the
+  archive. `/series/` lists every series. Logic lives in `src/utils/series.ts`.
+- **Related posts**: ranked by tag overlap (weighted 3x) then shared title words,
+  in `src/utils/series.ts`. Posts sharing nothing are dropped, not padded in.
+- **Code copy + heading anchors**: `src/components/ProseEnhancements.astro`,
+  progressive enhancement over the rendered prose.
+- **Newsletter**: Buttondown embed form, enabled by `PUBLIC_BUTTONDOWN_USER`.
+  Without it the component renders a labelled placeholder instead of a dead form.
 
 ## Deployment
 
